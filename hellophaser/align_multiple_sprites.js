@@ -46,10 +46,12 @@ function create() {
         handle2.input.enableDrag(true);
         line1 = new Phaser.Line(handle1.x, handle1.y, handle2.x, handle2.y);
         listOfNotes.push(line1);
-        listOfTupleHandlers.push((handle1, handle2));
+        var handle = {handle1: handle1, handle2: handle2};
+        listOfTupleHandlers.push(handle);
     }
 
 }
+
 
 function clickedSprite (sprite) {
 
@@ -60,7 +62,8 @@ function clickedSprite (sprite) {
 
 function update() {
     for (var i = 0; i < 5; i++) {
-        listOfNotes[i].fromSprite(listOfTupleHandlers[i][0], listOfTupleHandlers[i][1], false);
+        console.log("0 " + listOfTupleHandlers[i].handle1);
+        listOfNotes[i].fromSprite(listOfTupleHandlers[i].handle1, listOfTupleHandlers[i].handle2, false);
     }
 }
 
