@@ -10,6 +10,8 @@ var handlersList = []; //handlers for list of notes - for drawing lines
 var unit = height/21; //number of tones
 var group; 
 
+var activeTone = 0;
+
 function preload() {
 	game.stage.backgroundColor = "#124184";
     game.load.image('note', 'assets/sprites/WholeNote.svg.png');
@@ -63,16 +65,21 @@ function update() {
         listOfNotes[i].fromSprite(handlersList[i].handle1, handlersList[i].handle2, false);
     }    
 
+    var activeSprite = group.children[activeTone];
     //handle up and down key events
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
-        var sprite = group.children[0];
-        sprite.y -= unit;
+        activeSprite.y -= unit;
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
     {
-        var sprite = group.children[0];
-        sprite.y += unit;
+        activeSprite.y += unit;
+    }
+    else if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
+        activeTone -= 1;
+    }
+    else if(game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+        activeTone += 1;    
     }
 }
 
