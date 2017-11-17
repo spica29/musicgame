@@ -6,7 +6,9 @@ var game = new Phaser.Game(1200, 600, Phaser.CANVAS, 'phaser-example', {preload:
 var text = '';
 var spriteInFocus = null;
 var listOfNotes = [];
-var handlersList = [];
+var handlersList = []; //handlers for list of notes - for drawing lines
+var unit = height/21; //number of tones
+var group; 
 
 function preload() {
 	game.stage.backgroundColor = "#124184";
@@ -15,7 +17,7 @@ function preload() {
 
 function create() {
 
-    var group = game.add.group();
+    group = game.add.group();
 
     //  This will automatically inputEnable all children added to the Group
     group.inputEnableChildren = true;
@@ -26,43 +28,51 @@ function create() {
 
         sprite.name = 'note' + i;
         
-        sprite.events.onInputDown.add(clickedSprite, this);
+        //sprite.events.onInputDown.add(clickedSprite, this);
     }
 
-    var handle1;
-    var handle2;
-    var line1;
     for (var i = 0; i < 5; i++) {
-        var unit = height/21;
         var lineHeight = unit * (7 + i*2);
-        handle1 = game.add.sprite(0, lineHeight, 0);
+        var handle1 = game.add.sprite(0, lineHeight, 0);
         handle1.anchor.set(0.5);
         handle1.inputEnabled = true;
         handle1.input.enableDrag(true);
 
-        handle2 = game.add.sprite(width, lineHeight, 0);
+        var handle2 = game.add.sprite(width, lineHeight, 0);
         handle2.anchor.set(0.5);
         handle2.inputEnabled = true;
         handle2.input.enableDrag(true);
-        line1 = new Phaser.Line(handle1.x, handle1.y, handle2.x, handle2.y);
+        var line1 = new Phaser.Line(handle1.x, handle1.y, handle2.x, handle2.y);
         listOfNotes.push(line1);
         var handle = {handle1: handle1, handle2: handle2};
         handlersList.push(handle);
     }
-
 }
 
-
+/*
 function clickedSprite (sprite) {
 
     text = sprite.name;
 
     sprite.y -= 16;
-}
+}*/
 
 function update() {
+    //draw line
     for (var i = 0; i < 5; i++) {
         listOfNotes[i].fromSprite(handlersList[i].handle1, handlersList[i].handle2, false);
+    }    
+
+    //handle up and down key events
+    if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
+    {
+        var sprite = group.children[0];
+        sprite.y -= unit;
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
+    {
+        var sprite = group.children[0];
+        sprite.y += unit;
     }
 }
 
