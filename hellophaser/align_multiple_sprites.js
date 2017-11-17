@@ -62,7 +62,6 @@ function clickedSprite (sprite) {
 
 function update() {
     for (var i = 0; i < 5; i++) {
-        console.log("0 " + listOfTupleHandlers[i].handle1);
         listOfNotes[i].fromSprite(listOfTupleHandlers[i].handle1, listOfTupleHandlers[i].handle2, false);
     }
 }
