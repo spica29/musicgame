@@ -6,7 +6,7 @@ var game = new Phaser.Game(1200, 600, Phaser.CANVAS, 'phaser-example', {preload:
 var text = '';
 var spriteInFocus = null;
 var listOfNotes = [];
-var listOfTupleHandlers = [];
+var handlersList = [];
 
 function preload() {
 	game.stage.backgroundColor = "#124184";
@@ -47,7 +47,7 @@ function create() {
         line1 = new Phaser.Line(handle1.x, handle1.y, handle2.x, handle2.y);
         listOfNotes.push(line1);
         var handle = {handle1: handle1, handle2: handle2};
-        listOfTupleHandlers.push(handle);
+        handlersList.push(handle);
     }
 
 }
@@ -62,24 +62,12 @@ function clickedSprite (sprite) {
 
 function update() {
     for (var i = 0; i < 5; i++) {
-        listOfNotes[i].fromSprite(listOfTupleHandlers[i].handle1, listOfTupleHandlers[i].handle2, false);
+        listOfNotes[i].fromSprite(handlersList[i].handle1, handlersList[i].handle2, false);
     }
 }
 
 function render() {
-
-    if (text === '')
-    {
-        game.debug.text("Click the Sprites", 32, 32);
-    }
-    else
-    {
-        game.debug.text("You clicked: " + text, 32, 32);
-    }
-
     for (var i = 0; i < 5; i++) {
         game.debug.geom(listOfNotes[i]);
-        game.debug.lineInfo(listOfNotes[i], 32, 32);
-        game.debug.text("Drag the handles", 32, 550);
     }
 }
