@@ -1,7 +1,7 @@
 
 var width = 1200;
 var height = 600;
-var notesOnScreen = 18;
+var notesOnScreen = 12;
 var unit = height / 21; //number of tones
 var minUnit = 0;
 var maxUnit = 600 - 2 * unit;
@@ -18,6 +18,7 @@ var game = new Phaser.Game(
 
 var lines;
 var notes;
+var clef;
 
 /* state */
 
@@ -32,6 +33,7 @@ var activeNote = 0;
 
 function preload() {
 	game.stage.backgroundColor = "#FFF";
+	game.load.image('g-clef', 'assets/g-clef.png');
     game.load.image('note', 'assets/note.png');
     game.load.image('noteActive', 'assets/noteActive.png');
 }
@@ -42,7 +44,12 @@ function create() {
 
     lines = game.add.group();
     notes = game.add.group();
+    clef = game.add.group();
 
+    //draw clef
+    clef.create(0, unit*6, 'g-clef');
+
+    //draw lines
     for (var i = 0; i < 5; i += 1) {
         var lineHeight = unit * (7 + i * 2);
         var graphics = game.add.graphics(0, 0);
@@ -54,8 +61,9 @@ function create() {
         lines.add(graphics);
     }
 
+    //draw notes
     for (var i = 0; i < notesOnScreen; i += 1) {
-        notes.create(64 + i * 64, 400, 'note');
+        notes.create(150 + i * 90, 400, 'note');
     }
 }
 
@@ -102,10 +110,10 @@ function update() {
             activeNote = Math.max(0, activeNote);
             if (activeNote > notes.children.length - 1) {
                 activeNote = notes.children.length;
-                game.world.setBounds(0, 0, game.world.bounds.width + 64, game.height);
-                game.world.bounds.width += 64;
-                notes.create(64 + (64 * notes.children.length), 400, 'note');
-                game.camera.x += 64;
+                game.world.setBounds(0, 0, game.world.bounds.width + 90, game.height);
+                game.world.bounds.width += 90;
+                notes.create(150 + (90 * notes.children.length), 400, 'note');
+                game.camera.x += 90;
             }
         }
         keys.right = false;
@@ -113,3 +121,13 @@ function update() {
 }
 
 function render() {}
+
+var chordsEasy = {
+	"c-major" : ["c", "e", "g"],
+	"g-major" : ["g", "b", "d"],
+	"d-major" : ["d", "f-sharp", "a"],
+	"e-major" : ["e", "g-sharp", "b"],
+	"f-major" : ["f", "a", "c"],
+	"a-major" : ["a", "c-sharp", "e"],
+	"b-flat-major" : ["b-flat", "d", "f"]
+}
