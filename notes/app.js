@@ -19,6 +19,7 @@ var game = new Phaser.Game(
 var lines;
 var notes;
 var clef;
+var verticalLines;
 
 /* state */
 
@@ -36,6 +37,7 @@ function preload() {
 	game.load.image('g-clef', 'assets/g-clef.png');
     game.load.image('note', 'assets/note.png');
     game.load.image('noteActive', 'assets/noteActive.png');
+    game.load.image('verticalLine', 'assets/vertical-line.png');
 }
 
 function create() {
@@ -45,6 +47,7 @@ function create() {
     lines = game.add.group();
     notes = game.add.group();
     clef = game.add.group();
+    verticalLines = game.add.group();
 
     //draw clef
     clef.create(0, unit*6, 'g-clef');
@@ -54,12 +57,31 @@ function create() {
         var lineHeight = unit * (7 + i * 2);
         var graphics = game.add.graphics(0, 0);
         var rect = new Phaser.Rectangle(0, lineHeight, width, 1);
+        
         graphics
             .lineStyle(1, 0x000000)
             .drawShape(rect);
         graphics.fixedToCamera = true;
         lines.add(graphics);
     }
+
+    //draw vertical lines
+    /*
+    for (var i = 1; i < 4; i++) {
+        var distanceFromX = 135;
+        var line = new Phaser.Line(distanceFromX + 90*3*i, unit*7, distanceFromX + 90*3*i, unit * 15);
+		var graphics1 = game.add.graphics(0,0);
+		graphics1.lineStyle(2, 0x000000);
+		graphics1.moveTo(line.start.x,line.start.y);
+		graphics1.lineTo(line.end.x,line.end.y);
+		graphics1.endFill();
+		verticalLines.add(graphics1);
+		verticalLines.create(0, 500, 'line');
+    } */
+    for (var i = 0; i < notesOnScreen; i += 1) {
+        verticalLines.create(350 + i * 90 * 3,  unit*7, 'verticalLine');
+    }
+
 
     //draw notes
     for (var i = 0; i < notesOnScreen; i += 1) {
@@ -90,7 +112,7 @@ function update() {
         if (keys.down) {
             active.y += unit;
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
-        }
+        } 
         keys.down = false;
     }
     if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
@@ -113,6 +135,7 @@ function update() {
                 game.world.setBounds(0, 0, game.world.bounds.width + 90, game.height);
                 game.world.bounds.width += 90;
                 notes.create(150 + (90 * notes.children.length), 400, 'note');
+        		verticalLines.create(90 + notes.children.length * 90 * 3, unit*7, 'verticalLine');
                 game.camera.x += 90;
             }
         }
