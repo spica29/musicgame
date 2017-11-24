@@ -14,6 +14,13 @@ var game = new Phaser.Game(
     {preload: preload, create: create, update: update, render: render}
 );
 
+WebFontConfig = {
+    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
+    google: {
+      families: ['Revalia']
+    }
+};
+
 /* layers */
 
 var lines;
@@ -31,6 +38,8 @@ var keys = {
 };
 
 var activeNote = 0;
+var text = null;
+var grd;
 
 function preload() {
 	game.stage.backgroundColor = "#FFF";
@@ -38,6 +47,9 @@ function preload() {
     game.load.image('note', 'assets/note.png');
     game.load.image('noteActive', 'assets/noteActive.png');
     game.load.image('verticalLine', 'assets/vertical-line.png');
+
+    //text
+    game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 }
 
 function create() {
@@ -65,19 +77,6 @@ function create() {
         lines.add(graphics);
     }
 
-    //draw vertical lines
-    /*
-    for (var i = 1; i < 4; i++) {
-        var distanceFromX = 135;
-        var line = new Phaser.Line(distanceFromX + 90*3*i, unit*7, distanceFromX + 90*3*i, unit * 15);
-		var graphics1 = game.add.graphics(0,0);
-		graphics1.lineStyle(2, 0x000000);
-		graphics1.moveTo(line.start.x,line.start.y);
-		graphics1.lineTo(line.end.x,line.end.y);
-		graphics1.endFill();
-		verticalLines.add(graphics1);
-		verticalLines.create(0, 500, 'line');
-    } */
     for (var i = 0; i < notesOnScreen; i += 1) {
         verticalLines.create(350 + i * 90 * 3,  unit*7, 'verticalLine');
     }
@@ -87,6 +86,13 @@ function create() {
     for (var i = 0; i < notesOnScreen; i += 1) {
         notes.create(150 + i * 90, 400, 'note');
     }
+
+    //var obj = JSON.parse(chordsEasy);
+    text = game.add.text(200, unit*3 , chordsEasy[0][0]);
+    text.anchor.setTo(0.5);
+
+    text.font = 'Revalia';
+    text.fontSize = 30;
 }
 
 function update() {
@@ -145,7 +151,8 @@ function update() {
 
 function render() {}
 
-var chordsEasy = {
+var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]]];
+/*var  = ([
 	"c-major" : ["c", "e", "g"],
 	"g-major" : ["g", "b", "d"],
 	"d-major" : ["d", "f-sharp", "a"],
@@ -153,4 +160,4 @@ var chordsEasy = {
 	"f-major" : ["f", "a", "c"],
 	"a-major" : ["a", "c-sharp", "e"],
 	"b-flat-major" : ["b-flat", "d", "f"]
-}
+])*/
