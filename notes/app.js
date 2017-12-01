@@ -6,6 +6,8 @@ var unit = height / 21; //number of tones
 var minUnit = 0;
 var maxUnit = 600 - 2 * unit;
 
+var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]]];
+
 var game = new Phaser.Game(
     1200,
     600,
@@ -150,28 +152,34 @@ function update() {
             }
             console.log("y coordinate of note " + notes.children[activeNote-1].y);
             console.log("size of first chord " +  chordsEasy[countBars][1].length);
-            //check if next line
+            //check if next is bar
             if(countNote == chordsEasy[countBars][1].length){
         		//check past notes
-        		console.log("NEXT BAR");
+        		console.log("NEXT BAR, chord length" + activeChord[1].length);
         		
-        		//get y coordinate
         		//check if it was chord or interval before - different sizes
-        		if(activeChord.length == 2) //interval
+        		if(activeChord[1].length == 2) //interval
         		{
 
         		}
         		else //chord
         		{
-        			//get notes
+        			//get notes from given chord
         			var firstNote = chordsEasy[countBars][0];
         			var secondNote = chordsEasy[countBars][1];
         			var thirdNote = chordsEasy[countBars][2];
 
-        			//get their positions
+        			//get positions from notes in game
         			var firstNotePosition = notes.children[activeNote-3].y;
-        			var secondNotePosition = notes.children[activeNote-2].y:
+        			var secondNotePosition = notes.children[activeNote-2].y;
         			var thirdNotePosition = notes.children[activeNote-1].y;
+
+        			//TODO calculate position of every note (0 = e, 1 = f, 2 = g ...)
+        			var position = 0;
+        			console.log("IN " + firstNotePosition +  " unit " + 400);
+        			if(firstNotePosition == 400 + unit*position) {
+        				console.log("OK");
+        			}else console.log("NOT");
 
         		} 
 
@@ -190,7 +198,6 @@ function update() {
 
 function render() {}
 
-var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]]];
 /*var  = ([
 	"c-major" : ["c", "e", "g"],
 	"g-major" : ["g", "b", "d"],
