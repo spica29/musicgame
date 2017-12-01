@@ -40,6 +40,10 @@ var keys = {
 var activeNote = 0;
 var text = null;
 var grd;
+//count notes in one bar
+var countNote = 0;
+var countBars = 0;
+var activeChord = chordsEasy[0];
 
 function preload() {
 	game.stage.backgroundColor = "#FFF";
@@ -96,7 +100,6 @@ function create() {
 }
 
 function update() {
-
     notes.children.forEach(function (sprite) {
         sprite.loadTexture('note');
     })
@@ -134,6 +137,7 @@ function update() {
         keys.right = true;
     } else {
         if (keys.right) {
+        	countNote += 1;
             activeNote += 1;
             activeNote = Math.max(0, activeNote);
             if (activeNote > notes.children.length - 1) {
@@ -143,6 +147,41 @@ function update() {
                 notes.create(150 + (90 * notes.children.length), 400, 'note');
         		verticalLines.create(90 + notes.children.length * 90 * 3, unit*7, 'verticalLine');
                 game.camera.x += 90;
+            }
+            console.log("y coordinate of note " + notes.children[activeNote-1].y);
+            console.log("size of first chord " +  chordsEasy[countBars][1].length);
+            //check if next line
+            if(countNote == chordsEasy[countBars][1].length){
+        		//check past notes
+        		console.log("NEXT BAR");
+        		
+        		//get y coordinate
+        		//check if it was chord or interval before - different sizes
+        		if(activeChord.length == 2) //interval
+        		{
+
+        		}
+        		else //chord
+        		{
+        			//get notes
+        			var firstNote = chordsEasy[countBars][0];
+        			var secondNote = chordsEasy[countBars][1];
+        			var thirdNote = chordsEasy[countBars][2];
+
+        			//get their positions
+        			var firstNotePosition = notes.children[activeNote-3].y;
+        			var secondNotePosition = notes.children[activeNote-2].y:
+        			var thirdNotePosition = notes.children[activeNote-1].y;
+
+        		} 
+
+
+        		//start counting notes in bar from beginning
+        		countNote = 0;
+        		//go to next bar
+        		countBars += 1;
+        		//update active chord
+        		activeChord = chordsEasy[countBars];
             }
         }
         keys.right = false;
