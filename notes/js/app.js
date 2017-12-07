@@ -6,7 +6,9 @@ var unit = height / 21; //number of tones
 var minUnit = 0;
 var maxUnit = 600 - 2 * unit;
 var text;
-var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]]];
+var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]], ["f-major", ["f", "a", "c"]]];
+
+var notes = []
 
 var game = new Phaser.Game(
     1200,
@@ -90,7 +92,8 @@ function create() {
 
     //draw notes
     for (var i = 0; i < notesOnScreen; i += 1) {
-        notes.create(150 + i * 90, 400, 'note');
+        notes.create(150 + i * 90, 400, 'note').data = "e";
+        //sprite.data = "e"; //set all notes on e
     }
 
     writeText(chordsEasy[0][0]);
@@ -117,6 +120,7 @@ function update() {
         if (keys.up) {
             active.y -= unit;
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
+            active.data = changeNoteUp(active);
         }
         keys.up = false;
     }
@@ -126,6 +130,7 @@ function update() {
         if (keys.down) {
             active.y += unit;
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
+            active.data = changeNoteDown(active);
         } 
         keys.down = false;
     }
@@ -168,21 +173,38 @@ q
         		else //chord
         		{
         			//get notes from given chord
-        			var firstNote = chordsEasy[countBars][0];
-        			var secondNote = chordsEasy[countBars][1];
-        			var thirdNote = chordsEasy[countBars][2];
+        			var firstNote = chordsEasy[countBars][1][0];
+        			var secondNote = chordsEasy[countBars][1][1];
+        			var thirdNote = chordsEasy[countBars][1][2];
 
         			//get positions from notes in game
-        			var firstNotePosition = notes.children[activeNote-3].y;
-        			var secondNotePosition = notes.children[activeNote-2].y;
-        			var thirdNotePosition = notes.children[activeNote-1].y;
+        			var firstNotePlayed = notes.children[activeNote-3];
+        			var secondNotePlayed = notes.children[activeNote-2];
+        			var thirdNotePlayed = notes.children[activeNote-1];
 
         			//TODO calculate position of every note (0 = e, 1 = f, 2 = g ...)
         			var position = 0;
-        			console.log("IN " + firstNotePosition +  " unit " + 400);
-        			if(firstNotePosition == 400 + unit*position) {
+        			//console.log("IN " + firstNotePosition +  " unit " + 400);
+        			/*
+                    if(firstNotePosition == 400 + unit*position) {
         				console.log("OK");
-        			}else console.log("NOT");
+        			}else console.log("NOT");*/
+
+                    if(firstNote == firstNotePlayed.data){
+                        console.log("first note ok ");
+                        if(secondNote == secondNotePlayed.data){
+                            console.log("second note ok ");
+                            if(thirdNote == thirdNotePlayed.data){
+                                console.log("third note ok ");
+                            } else {
+                                console.log("third note bad");
+                            }
+                        } else {
+                            console.log("second note bad");
+                        }
+                    }else {
+                        console.log("first note bad");
+                    }
 
         		} 
 
@@ -211,3 +233,49 @@ function render() {}
 	"a-major" : ["a", "c-sharp", "e"],
 	"b-flat-major" : ["b-flat", "d", "f"]
 ])*/
+
+function changeNoteUp(activeNote) {
+    switch(activeNote.data) {
+        case "c":
+            return "d";
+        case "d":
+            return "e";
+        case "e":
+            return "f";
+            break;
+        case "f":
+            return "g";
+            break;
+        case "g":
+            return "a";
+        case "a":
+            return "h";
+        case "h":
+            return "c";
+        default:
+            return "e";
+    }   
+}
+
+function changeNoteDown(activeNote) {
+    switch(activeNote.data) {
+        case "c":
+            return "h";
+        case "d":
+            return "c";
+        case "e":
+            return "d";
+            break;
+        case "f":
+            return "e";
+            break;
+        case "g":
+            return "f";
+        case "a":
+            return "g";
+        case "h":
+            return "a";
+        default:
+            return "e";
+    }   
+}
