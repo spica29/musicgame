@@ -5,7 +5,7 @@ var notesOnScreen = 12;
 var unit = height / 21; //number of tones
 var minUnit = 0;
 var maxUnit = 600 - 2 * unit;
-
+var text;
 var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]]];
 
 var game = new Phaser.Game(
@@ -93,12 +93,15 @@ function create() {
         notes.create(150 + i * 90, 400, 'note');
     }
 
-    //var obj = JSON.parse(chordsEasy);
-    text = game.add.text(200, unit*3 , chordsEasy[0][0]);
+    writeText(chordsEasy[0][0]);
+}
+
+function writeText(text1) {
+    text = game.add.text(550, unit*3 , text1);
     text.anchor.setTo(0.5);
 
     text.font = 'Revalia';
-    text.fontSize = 30;
+    text.fontSize = 40;
 }
 
 function update() {
@@ -160,7 +163,7 @@ function update() {
         		//check if it was chord or interval before - different sizes
         		if(activeChord[1].length == 2) //interval
         		{
-
+q
         		}
         		else //chord
         		{
@@ -190,6 +193,7 @@ function update() {
         		countBars += 1;
         		//update active chord
         		activeChord = chordsEasy[countBars];
+               text.setText(chordsEasy[countBars][0]);
             }
         }
         keys.right = false;
