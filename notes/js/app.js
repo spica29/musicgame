@@ -6,7 +6,9 @@ var unit = height / 21; //number of tones
 var minUnit = 0;
 var maxUnit = 600 - 2 * unit;
 var text;
-var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]], ["f-major", ["f", "a", "c"]]];
+var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]], ["f-major", ["f", "a", "c"]],
+                ["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]], ["f-major", ["f", "a", "c"]],
+                ["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]], ["f-major", ["f", "a", "c"]]];
 
 var notes = []
 
@@ -150,8 +152,8 @@ function update() {
         	countNote += 1;
             activeNote += 1;
             activeNote = Math.max(0, activeNote);
-            if (activeNote > notes.children.length - 1) {
-                activeNote = notes.children.length;
+            if (activeNote > notes.children.length - 5) {
+                activeNote = notes.children.length - 4;
                 game.world.setBounds(0, 0, game.world.bounds.width + 90, game.height);
                 game.world.bounds.width += 90;
                 notes.create(150 + (90 * notes.children.length), 400, 'note');
