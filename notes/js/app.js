@@ -191,22 +191,29 @@ q
                     if(firstNotePosition == 400 + unit*position) {
         				console.log("OK");
         			}else console.log("NOT");*/
-
+                    var endGame = "";
                     if(firstNote == firstNotePlayed.data){
                         console.log("first note ok ");
-                        if(secondNote == secondNotePlayed.data){
-                            console.log("second note ok ");
-                            if(thirdNote == thirdNotePlayed.data){
-                                console.log("third note ok ");
-                            } else {
-                                console.log("third note bad");
-                            }
-                        } else {
-                            console.log("second note bad");
-                        }
                     }else {
+                        endGame += "first note bad \n";
                         console.log("first note bad");
                     }
+
+                    if(secondNote == secondNotePlayed.data){
+                        console.log("second note ok ");
+                    } else {
+                        endGame += "second note bad\n";
+                        console.log("second note bad");
+                    }
+
+                    if(thirdNote == thirdNotePlayed.data){
+                        console.log("third note ok ");
+                    } else {
+                        endGame += "third note bad\n";
+                        console.log("third note bad");
+                    }
+
+                    if(endGame != "") alert(endGame);
 
         		} 
 
