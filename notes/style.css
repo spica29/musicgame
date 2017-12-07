@@ -43,6 +43,14 @@ th, td{
     padding-top: 25%;
     padding-left: 60%;
     position: absolute;
+
+}
+
+#yearTable{
+    font-family: Century;
+    padding-top: 12%;
+    padding-left: 50%;
+    position: absolute;
 }
 
 a.button {
@@ -67,6 +75,18 @@ a.button {
     padding-top: 2%;
     position: relative;
 }
+
+#homeButton{
+    font-family: Century;
+}
+
+#buttonPlay{
+    font-family: Century;
+    padding-top: 18%;
+    padding-left: 28%;
+    position: relative;
+}
+
 
 
 
