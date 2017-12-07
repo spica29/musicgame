@@ -141,6 +141,7 @@ function update() {
     } else {
         if (keys.left) {
             activeNote -= 1;
+            countNote -= 1;
             activeNote = Math.min(Math.max(0, activeNote), notes.children.length - 1);
         }
         keys.left = false;
