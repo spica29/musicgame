@@ -249,8 +249,8 @@ function changeNoteUp(activeNote) {
         case "g":
             return "a";
         case "a":
-            return "h";
-        case "h":
+            return "b";
+        case "b":
             return "c";
         default:
             return "e";
@@ -260,7 +260,7 @@ function changeNoteUp(activeNote) {
 function changeNoteDown(activeNote) {
     switch(activeNote.data) {
         case "c":
-            return "h";
+            return "b";
         case "d":
             return "c";
         case "e":
@@ -273,7 +273,7 @@ function changeNoteDown(activeNote) {
             return "f";
         case "a":
             return "g";
-        case "h":
+        case "b":
             return "a";
         default:
             return "e";
