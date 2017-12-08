@@ -160,6 +160,7 @@ function update() {
                 notes.create(150 + (90 * notes.children.length), 400, 'note');
         		verticalLines.create(90 + notes.children.length * 90 * 3, unit*7, 'verticalLine');
                 game.camera.x += 90;
+                text.x += 90;
             }
             console.log("y coordinate of note " + notes.children[activeNote-1].y);
             console.log("size of first chord " +  chordsEasy[countBars][1].length);
@@ -215,6 +216,7 @@ q
                     }
 
                     if(endGame != "") alert(endGame);
+                    else alert("BRAVO!");
 
         		} 
 
@@ -225,7 +227,8 @@ q
         		countBars += 1;
         		//update active chord
         		activeChord = chordsEasy[countBars];
-               text.setText(chordsEasy[countBars][0]);
+                text.setText(chordsEasy[countBars][0]);
+                
             }
         }
         keys.right = false;
