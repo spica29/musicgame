@@ -43,6 +43,9 @@ var keys = {
     right: false
 };
 
+//mistake strings
+var mistake1, mistake2, mistake3;
+
 var activeNote = 0;
 var text = null;
 var grd;
@@ -99,6 +102,21 @@ function create() {
     }
 
     writeText(chordsEasy[0][0]);
+    //mistake 
+    mistake1 = game.add.text(0, unit*17, "");
+    mistake1.anchor.setTo(0.5);
+    mistake1.font = 'Revalia';
+    mistake1.fontSize = 12;
+
+    mistake2 = game.add.text(0, unit*18, "");
+    mistake2.anchor.setTo(0.5);
+    mistake2.font = 'Revalia';
+    mistake2.fontSize = 12;
+
+    mistake3 = game.add.text(0, unit*19, "");
+    mistake3.anchor.setTo(0.5);
+    mistake3.font = 'Revalia';
+    mistake3.fontSize = 12;
 }
 
 function writeText(text1) {
@@ -139,7 +157,7 @@ function update() {
     if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
         keys.left = true;
     } else {
-        if (keys.left) {
+        if (keys.left && countNote > 0) {
             activeNote -= 1;
             countNote -= 1;
             activeNote = Math.min(Math.max(0, activeNote), notes.children.length - 1);
@@ -196,27 +214,41 @@ q
                     var endGame = "";
                     if(firstNote == firstNotePlayed.data){
                         console.log("first note ok ");
+                        mistake1.setText("first note ok ");
+                        mistake1.x += 265;
                     }else {
                         endGame += "first note bad \n";
                         console.log("first note bad");
+                        mistake1.setText("first note bad");
+                        mistake1.x += 265;
                     }
 
                     if(secondNote == secondNotePlayed.data){
                         console.log("second note ok ");
+                        mistake2.setText("second note ok ");
+                        mistake2.x += 265;
                     } else {
                         endGame += "second note bad\n";
                         console.log("second note bad");
+                        mistake2.setText("second note bad ");
+                        mistake2.x += 265;
                     }
 
                     if(thirdNote == thirdNotePlayed.data){
                         console.log("third note ok ");
+                        mistake3.setText("third note ok ");
+                        mistake3.x += 265;
                     } else {
                         endGame += "third note bad\n";
                         console.log("third note bad");
+                        mistake3.setText("third note bad ");
+                        mistake3.x += 265;
                     }
 
+                    /*
                     if(endGame != "") alert(endGame);
                     else alert("BRAVO!");
+                    */
 
         		} 
 
