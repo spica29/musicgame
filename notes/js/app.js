@@ -48,6 +48,8 @@ var mistake1, mistake2, mistake3;
 
 var activeNote = 0;
 var text = null;
+var time = null;
+var textTime = null;
 var grd;
 //count notes in one bar
 var countNote = 0;
@@ -123,6 +125,11 @@ function writeText(text1) {
     text = game.add.text(550, unit*3 , text1);
     text.anchor.setTo(0.5);
 
+    time = game.add.text(1150, unit*3 , this.game.time.totalElapsedSeconds());
+    time.anchor.setTo(0.5);
+    textTime = game.add.text(1150, unit*2 , "Time");
+    textTime.anchor.setTo(0.5);
+
     text.font = 'Revalia';
     text.fontSize = 40;
 }
@@ -179,6 +186,8 @@ function update() {
         		verticalLines.create(90 + notes.children.length * 90 * 3, unit*7, 'verticalLine');
                 game.camera.x += 90;
                 text.x += 90;
+                time.x += 90;
+                textTime.x += 90;
             }
             console.log("y coordinate of note " + notes.children[activeNote-1].y);
             console.log("size of first chord " +  chordsEasy[countBars][1].length);
@@ -267,7 +276,9 @@ q
     }
 }
 
-function render() {}
+function render() {
+    time.setText(this.game.time.totalElapsedSeconds().toFixed(2));
+}
 
 /*var  = ([
 	"c-major" : ["c", "e", "g"],
