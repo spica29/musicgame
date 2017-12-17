@@ -33,7 +33,7 @@ var lines;
 var notes;
 var clef;
 var verticalLines;
-
+var correctChords = 0;
 /* state */
 
 var keys = {
@@ -134,6 +134,11 @@ function writeText(text1) {
     text.fontSize = 40;
 }
 
+function restart(){
+
+
+}
+
 function update() {
     notes.children.forEach(function (sprite) {
         sprite.loadTexture('note');
@@ -203,6 +208,7 @@ q
         		}
         		else //chord
         		{
+        		    var correctNotes = 0;
         			//get notes from given chord
         			var firstNote = chordsEasy[countBars][1][0];
         			var secondNote = chordsEasy[countBars][1][1];
@@ -225,6 +231,7 @@ q
                         console.log("first note ok ");
                         mistake1.setText("first note ok ");
                         mistake1.x += 265;
+                        correctNotes += 1;
                     }else {
                         endGame += "first note bad \n";
                         console.log("first note bad");
@@ -236,6 +243,7 @@ q
                         console.log("second note ok ");
                         mistake2.setText("second note ok ");
                         mistake2.x += 265;
+                        correctNotes += 1;
                     } else {
                         endGame += "second note bad\n";
                         console.log("second note bad");
@@ -247,17 +255,34 @@ q
                         console.log("third note ok ");
                         mistake3.setText("third note ok ");
                         mistake3.x += 265;
+                        correctNotes += 1;
                     } else {
                         endGame += "third note bad\n";
                         console.log("third note bad");
                         mistake3.setText("third note bad ");
                         mistake3.x += 265;
                     }
-
+                    if (correctNotes === 3){
+                        correctChords += 1;
+                    }
                     /*
                     if(endGame != "") alert(endGame);
                     else alert("BRAVO!");
                     */
+                    if(endGame != "") {
+                        alert((correctChords * this.game.time.totalElapsedSeconds().toFixed(2)) + " points");
+                        this.game.state.restart();
+                        activeNote = 0;
+                        game.destroy();
+                        game = new Phaser.Game(
+                            1200,
+                            600,
+                            Phaser.CANVAS,
+                            'phaser-example',
+                            {preload: preload, create: create, update: update, render: render}
+                        );
+
+                    }
 
         		} 
 
@@ -268,7 +293,7 @@ q
         		countBars += 1;
         		//update active chord
         		activeChord = chordsEasy[countBars];
-                text.setText(chordsEasy[countBars][0]);
+                //text.setText(chordsEasy[countBars][0] + correctChords);
                 
             }
         }
