@@ -33,7 +33,6 @@ var lines;
 var notes;
 var clef;
 var verticalLines;
-var correctChords = 0;
 /* state */
 
 var keys = {
@@ -50,6 +49,7 @@ var activeNote = 0;
 var text = null;
 var time = null;
 var textTime = null;
+var correctChords = 0;
 var grd;
 //count notes in one bar
 var countNote = 0;
@@ -134,10 +134,6 @@ function writeText(text1) {
     text.fontSize = 40;
 }
 
-function restart(){
-
-
-}
 
 function update() {
     notes.children.forEach(function (sprite) {
@@ -273,13 +269,14 @@ q
                         alert((correctChords * this.game.time.totalElapsedSeconds().toFixed(2)) + " points");
                         this.game.state.restart();
                         activeNote = 0;
+
                         game.destroy();
                         game = new Phaser.Game(
                             1200,
                             600,
                             Phaser.CANVAS,
                             'phaser-example',
-                            {preload: preload, create: create, update: update, render: render}
+                            {preload: preload, create: create, update: update, render: render}, correctChords=0
                         );
 
                     }
