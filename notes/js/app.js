@@ -268,28 +268,28 @@ q
                     if(endGame != "") {
                         alert((correctChords * this.game.time.totalElapsedSeconds().toFixed(2)) + " points");
                         this.game.state.restart();
-                        activeNote = 0;
-
                         game.destroy();
                         game = new Phaser.Game(
                             1200,
                             600,
                             Phaser.CANVAS,
                             'phaser-example',
-                            {preload: preload, create: create, update: update, render: render}, correctChords=0
+                            {preload: preload, create: create, update: update, render: render}, correctChords=0, activeNote=0, countNote=0, countBars=0,
+                            activeChord = chordsEasy[0]
                         );
 
                     }
 
         		} 
 
-
-        		//start counting notes in bar from beginning
-        		countNote = 0;
-        		//go to next bar
-        		countBars += 1;
-        		//update active chord
-        		activeChord = chordsEasy[countBars];
+                if(endGame == ""){
+                    //start counting notes in bar from beginning
+                    countNote = 0;
+                    //go to next bar
+                    countBars += 1;
+                    //update active chord
+        		    activeChord = chordsEasy[countBars];
+                }
                 //text.setText(chordsEasy[countBars][0] + correctChords);
                 
             }
