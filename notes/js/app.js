@@ -274,13 +274,13 @@ q
                             600,
                             Phaser.CANVAS,
                             'phaser-example',
-                            {preload: preload, create: create, update: update, render: render}, correctChords=0, activeNote=0, countNote=0, countBars=0,
-                            activeChord = chordsEasy[0]
+                            {preload: preload, create: create, update: update, render: render}, correctChords=0, countNote=0, countBars=0,
+                            activeChord = chordsEasy[0], activeNote=0
                         );
 
                     }
 
-        		} 
+        		}
 
                 if(endGame == ""){
                     //start counting notes in bar from beginning
@@ -288,8 +288,10 @@ q
                     //go to next bar
                     countBars += 1;
                     //update active chord
-        		    activeChord = chordsEasy[countBars];
-                }
+                    activeChord = chordsEasy[countBars];
+                    text.setText(chordsEasy[countBars][0]);
+        		}
+
                 //text.setText(chordsEasy[countBars][0] + correctChords);
                 
             }
