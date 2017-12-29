@@ -33,6 +33,7 @@ var lines;
 var notes;
 var clef;
 var verticalLines;
+var sharp, flat;
 /* state */
 
 var keys = {
@@ -60,6 +61,8 @@ function preload() {
 	game.stage.backgroundColor = "#FFF";
 	game.load.image('g-clef', 'assets/g-clef.png');
     game.load.image('note', 'assets/note.png');
+    game.load.image('sharp', 'assets/sharp-sign.png');
+    game.load.image('flat', 'assets/flat-sign.png');
     game.load.image('noteActive', 'assets/noteActive.png');
     game.load.image('verticalLine', 'assets/vertical-line.png');
 
@@ -74,6 +77,8 @@ function create() {
     lines = game.add.group();
     notes = game.add.group();
     clef = game.add.group();
+    sharps = game.add.group();
+    flats = game.add.group();
     verticalLines = game.add.group();
 
     //draw clef
@@ -134,7 +139,6 @@ function writeText(text1) {
     text.fontSize = 40;
 }
 
-
 function update() {
     notes.children.forEach(function (sprite) {
         sprite.loadTexture('note');
@@ -142,6 +146,34 @@ function update() {
     var active = notes.children[activeNote];
     active.loadTexture('noteActive');
 
+    if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+        keys.spacebar = true;
+    } else {
+        if (keys.spacebar) {
+            //sharp, flat or nothing
+            //check what is drawn in front of note
+            if(active.data.indexOf("sharp") == -1 && active.data.indexOf("flat") == -1){
+                //change to sharp
+                sharp = sharps.create(active.x, active.y, 'sharp');
+                active.data = active.data + "-sharp";
+                console.log("Change to sharp, active note data " + active.data);
+            }
+            else if (active.data.indexOf("sharp") !== -1){
+                //change to flat
+                flat = flats.create(active.x, active.y, 'flat');
+                active.data = active.data.substring(0,1) + "-flat";
+                console.log("Change to flat, active note data " + active.data);
+                //remove sharp
+                sharps.remove(sharp);
+            } else {
+                active.data = active.data.substring(0,1);
+                console.log("Change to nothing, active note data " + active.data);
+                //remove flat
+                flats.remove(flat);
+            }
+        }
+        keys.spacebar = false;
+    }
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
         keys.up = true;
     } else {
@@ -200,7 +232,7 @@ function update() {
         		//check if it was chord or interval before - different sizes
         		if(activeChord[1].length == 2) //interval
         		{
-q
+
         		}
         		else //chord
         		{
@@ -281,6 +313,7 @@ q
                     }
 
         		}
+
 
                 if(endGame == ""){
                     //start counting notes in bar from beginning
