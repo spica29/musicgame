@@ -71,6 +71,11 @@ var activeChord = chordsEasy[0];
 
 function preload() {
 	game.stage.backgroundColor = "#FFF";
+    game.load.image('nebula-1', 'assets/nebula-1.jpg');
+    game.load.image('nebula-2', 'assets/nebula-2.png');
+    game.load.image('nebula-3', 'assets/nebula-3.jpg');
+    game.load.image('nebula-4', 'assets/nebula-4.png');
+
 	game.load.image('g-clef', 'assets/g-clef.png');
     game.load.image('note', 'assets/note.png');
     game.load.image('sharp', 'assets/sharp-sign.png');
@@ -83,6 +88,11 @@ function preload() {
 }
 
 function create() {
+    game.add.tileSprite(0, 0, 223, 223, 'nebula-1');
+    game.add.tileSprite(200, 400, 250, 250, 'nebula-2');
+    game.add.tileSprite(400, 0, 440, 440, 'nebula-3');
+    game.add.tileSprite(700, 200, 1024, 768, 'nebula-4');
+
     game.world.setBounds(0, 0, this.game.width, this.game.height);
     game.camera.setSize(this.game.width, this.game.height);
 
@@ -223,11 +233,13 @@ function update() {
         	countNote += 1;
             activeNote += 1;
             activeNote = Math.max(0, activeNote);
+            console.log("active note: " + activeNote);
+            console.log("active " + active.data);
             if (activeNote > notes.children.length - 5) {
                 activeNote = notes.children.length - 4;
                 game.world.setBounds(0, 0, game.world.bounds.width + 90, game.height);
                 game.world.bounds.width += 90;
-                notes.create(150 + (90 * notes.children.length), 400, 'note');
+                notes.create(150 + (90 * notes.children.length), 400, 'note').data = "e";
         		verticalLines.create(90 + notes.children.length * 90 * 3, unit*7, 'verticalLine');
                 game.camera.x += 90;
                 text.x += 90;
@@ -258,14 +270,10 @@ function update() {
         			var firstNotePlayed = notes.children[activeNote-3];
         			var secondNotePlayed = notes.children[activeNote-2];
         			var thirdNotePlayed = notes.children[activeNote-1];
+                    console.log("Played notes: " + firstNotePlayed.data + secondNotePlayed.data+ thirdNotePlayed.data);
 
-        			//TODO calculate position of every note (0 = e, 1 = f, 2 = g ...)
         			var position = 0;
-        			//console.log("IN " + firstNotePosition +  " unit " + 400);
-        			/*
-                    if(firstNotePosition == 400 + unit*position) {
-        				console.log("OK");
-        			}else console.log("NOT");*/
+
                     var endGame = "";
                     if(firstNote == firstNotePlayed.data){
                         console.log("first note ok ");
