@@ -6,10 +6,15 @@ var unit = height / 21; //number of tones
 var minUnit = 0;
 var maxUnit = 600 - 2 * unit;
 var text;
+//up to two sharp/flat 
 var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]], ["f-major", ["f", "a", "c"]],
-                ["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]], ["f-major", ["f", "a", "c"]],
-                ["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]], ["f-major", ["f", "a", "c"]]];
-
+                ["a-minor", ["a", "c", "e"]], ["e-minor", ["e", "g", "b"]], ["d-minor", ["d", "f", "a"]],
+                ["d-major", ["d", "f-sharp", "a"]], ["b-flat", ["b-flat", "d", "f"]], 
+                ["b-minor", ["b", "d", "f-sharp"]], [["g-minor", ["g", "b-flat", "d"]]];
+//up to 5 sharp/flat
+var chordsMedium = [[]]
+//up to 7 sharp/flat 
+var chordsHard
 var notes = []
 
 var game = new Phaser.Game(
@@ -159,7 +164,7 @@ function update() {
                 console.log("Change to sharp, active note data " + active.data);
             }
             else if (active.data.indexOf("sharp") !== -1){
-                //change to flat
+                //change to sharp
                 flat = flats.create(active.x, active.y, 'flat');
                 active.data = active.data.substring(0,1) + "-flat";
                 console.log("Change to flat, active note data " + active.data);
