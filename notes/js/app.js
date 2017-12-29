@@ -7,14 +7,21 @@ var minUnit = 0;
 var maxUnit = 600 - 2 * unit;
 var text;
 //up to two sharp/flat 
-var chordsEasy = [["c-major", ["c", "e", "g"]], ["g-major", ["g", "b", "d"]], ["f-major", ["f", "a", "c"]],
-                ["a-minor", ["a", "c", "e"]], ["e-minor", ["e", "g", "b"]], ["d-minor", ["d", "f", "a"]],
-                ["d-major", ["d", "f-sharp", "a"]], ["b-flat", ["b-flat", "d", "f"]], 
-                ["b-minor", ["b", "d", "f-sharp"]], [["g-minor", ["g", "b-flat", "d"]]];
-//up to 5 sharp/flat
-var chordsMedium = [[]]
-//up to 7 sharp/flat 
-var chordsHard
+var chordsEasy = [["c-major", ["c", "e", "g"]], ["a-minor", ["a", "c", "e"]], 
+                ["g-major", ["g", "b", "d"]], ["e-minor", ["e", "g", "b"]], 
+                ["f-major", ["f", "a", "c"]], ["d-minor", ["d", "f", "a"]], 
+                ["d-major", ["d", "f-sharp", "a"]], ["b-minor", ["b", "d", "f-sharp"]], 
+                ["b-flat-major", ["b-flat", "d", "f"]], ["g-minor", ["g", "b-flat", "d"]]];
+//up to 4 sharp/flat
+var chordsMedium = [["a-major", ["a", "c-sharp", "e"]], ["f-sharp-minor", ["f-sharp", "a", "c-sharp"]], 
+                    ["e-flat-major", ["e-flat", "g", "b-flat"]],  ["c-minor", ["c", "e-flat", "g"]],
+                    ["e-major", ["e", "g-sharp", "b"]], ["c-sharp-minor", ["c-sharp", "e", "g-sharp"]], 
+                    ["a-flat-major", ["a-flat", "c", "e-flat"]], ["f-minor", ["f", "a-flat", "c"]]];
+//up to 6 sharp/flat 
+var chordsHard = [["b-major", ["b", "d-sharp", "f-sharp"]], ["g-sharp-minor", ["g-sharp", "b", "d-sharp"]],
+                    ["d-flat-major", ["d-flat", "f", "a-flat"]], ["b-flat-minor", ["b-flat", "d-flat", "f"]],
+                    ["f-sharp-major", ["f-sharp", "a-sharp", "c-sharp"]], ["d-sharp-minor", ["d-sharp", "f-sharp", "a-sharp"]],
+                    ["g-flat-major", ["g-flat", "b-flat", "d-flat"]], ["e-flat-minor", ["e-flat", "g-flat", "b-flat"]]]
 var notes = []
 
 var game = new Phaser.Game(
