@@ -1,7 +1,7 @@
 
 var width = 1200;
 var height = 600;
-var notesOnScreen = 12;
+var notesOnScreen = 7;
 var unit = height / 21; //number of tones
 var minUnit = 0;
 var maxUnit = 600 - 2 * unit;
@@ -120,13 +120,13 @@ function create() {
     }
 
     for (var i = 0; i < notesOnScreen; i += 1) {
-        verticalLines.create(350 + i * 90 * 3,  unit*7, 'verticalLine');
+        verticalLines.create(485 + i * 150 * 3,  unit*7, 'verticalLine');
     }
 
 
     //draw notes
     for (var i = 0; i < notesOnScreen; i += 1) {
-        notes.create(150 + i * 90, 400, 'note').data = "e";
+        notes.create(150 + i * 150, 400, 'note').data = "e";
         //sprite.data = "e"; //set all notes on e
     }
 
@@ -176,13 +176,13 @@ function update() {
             //check what is drawn in front of note
             if(active.data.indexOf("sharp") == -1 && active.data.indexOf("flat") == -1){
                 //change to sharp
-                sharp = sharps.create(active.x, active.y, 'sharp');
+                sharp = sharps.create(active.x - 80, active.y - 20, 'sharp');
                 active.data = active.data + "-sharp";
                 console.log("Change to sharp, active note data " + active.data);
             }
             else if (active.data.indexOf("sharp") !== -1){
                 //change to sharp
-                flat = flats.create(active.x, active.y, 'flat');
+                flat = flats.create(active.x - 100, active.y - 35, 'flat');
                 active.data = active.data.substring(0,1) + "-flat";
                 console.log("Change to flat, active note data " + active.data);
                 //remove sharp
@@ -237,14 +237,14 @@ function update() {
             console.log("active " + active.data);
             if (activeNote > notes.children.length - 5) {
                 activeNote = notes.children.length - 4;
-                game.world.setBounds(0, 0, game.world.bounds.width + 90, game.height);
-                game.world.bounds.width += 90;
-                notes.create(150 + (90 * notes.children.length), 400, 'note').data = "e";
-        		verticalLines.create(90 + notes.children.length * 90 * 3, unit*7, 'verticalLine');
-                game.camera.x += 90;
-                text.x += 90;
-                time.x += 90;
-                textTime.x += 90;
+                game.world.setBounds(0, 0, game.world.bounds.width + 150, game.height);
+                game.world.bounds.width += 150;
+                notes.create(150 + (150 * notes.children.length), 400, 'note').data = "e";
+        		verticalLines.create(150 + notes.children.length * 150 * 3, unit*7, 'verticalLine');
+                game.camera.x += 150;
+                text.x += 150;
+                time.x += 150;
+                textTime.x += 150;
             }
             console.log("y coordinate of note " + notes.children[activeNote-1].y);
             console.log("size of first chord " +  chordsEasy[countBars][1].length);
