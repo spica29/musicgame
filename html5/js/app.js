@@ -292,6 +292,8 @@ function update() {
     if(distance >= width/2 + 45) {
         flash();
         game.paused = true;
+        console.log(notes.children[activeNote].x);
+        button.x = notes.children[activeNote].x + 500;
         button.visible = true;
     }
 
