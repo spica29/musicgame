@@ -49,7 +49,7 @@ var verticalLines;
 var horizontalLines;
 var sharp, flat;
 /* state */
-var speed = 20;
+var speed = 20, displayIncreaseSpeed = null;
 var points = 0;
 
 var keys = {
@@ -440,14 +440,27 @@ function update() {
         keys.right = true;
     } else {
         if (keys.right) {
+            if(displayIncreaseSpeed != null){
+                displayIncreaseSpeed.destroy();
+            }
             //increase speed if player is on 3/4 of screen
-            if(active.x > width/4*3) {
+            if(active.x > ((width/4)*3)) {
                 speed += 0.3;
                 console.log("increasing speed");
+                if(points > 0) {
+                    displayIncreaseSpeed = game.add.text(width/2, height - 70, "Good job! Increasing speed.");
+                    displayIncreaseSpeed.anchor.setTo(0.5);
+                    displayIncreaseSpeed.font = 'Revalia';
+                    displayIncreaseSpeed.fontSize = 35;
+                    displayIncreaseSpeed.fixedToCamera = true;
+                    displayIncreaseSpeed.cameraOffset.setTo(width/2, height - 70);
+                }
             }
 
-            if(displayPointsInBar != null)
+            if(displayPointsInBar != null){
                 displayPointsInBar.destroy();
+            }
+
         	countNote += 1;
             activeNote += 1;
             activeNote = Math.max(0, activeNote);
@@ -510,12 +523,6 @@ function update() {
                     points += Math.round(pointsInBar * 100) / 100;
                     displayPoints.setText("Points: " + (Math.round(points* 100) / 100));
                     correctChords += 1;
-                    
-
-                    if(false) {
-                        stopGame();
-                    }
-
         		}
 
                 //start counting notes in bar from beginning
