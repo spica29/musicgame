@@ -101,11 +101,7 @@ function calculatePoints(numberOfMistakes) {
 function preload() {
 	//game.stage.backgroundColor = "#FFF";
     game.load.image('circle', 'assets/images/empty.png');
-    game.load.image('background1', 'assets/images/background.png');
-    game.load.image('background2', 'assets/images/background2.png');
-    game.load.image('background3', 'assets/images/background3.png');
-    game.load.image('background4', 'assets/images/background4.jpg');
-    game.load.image('background5', 'assets/images/background5.jpg');
+    game.load.image('background1', 'assets/images/merge1.png');
 
     game.load.image('g-clef', 'assets/images/g-clef.png');
     game.load.image('note', 'assets/images/note.png');
@@ -152,7 +148,7 @@ function p(pointer) {
 }
 
 function create() {
-    game.add.tileSprite(0, 0, 1000, 600, 'background5');
+    game.add.tileSprite(0, 0, 10240, 600, 'background1');
 
     var location = window.location.href;
     var addedLevel = location.split('level=')[1];
@@ -287,6 +283,7 @@ function stopGame() {
 function update() {
     circle.body.moveRight(speed);
     speed += 0.05;
+    speed +=5;
     //console.log("speed " + speed);
     notes.children.forEach(function (sprite) {
         sprite.loadTexture('note');
@@ -325,9 +322,10 @@ function update() {
     var active = notes.children[activeNote];
     active.loadTexture('noteActive');
 
+
     //check if active note is in camera bounds
     var distance = game.physics.arcade.distanceBetween(circle, active);
-    if(distance >= width/2 + 45) {
+    if(distance >= width/2 + 45 && false) {
         flash();
         game.paused = true;
     }
