@@ -66,7 +66,7 @@ var text = null;
 var time = null, displayPoints = null;
 var textTime = null;
 var correctChords = 0;
-var grd;
+var sharps, flats;
 var circle;
 //count notes in one bar
 var countNote = 0;
@@ -322,6 +322,15 @@ function update() {
         keys.up = true;
     } else {
         if (keys.up) {
+            //remove sharps and flats
+            if(active.data.indexOf("sharp") !== -1){
+                sharps.children[sharps.children.length - 1].destroy();
+                active.data = active.data.substring(0,1);
+            } else if (active.data.indexOf("flat") !== -1) {
+                flats.children[flats.children.length - 1].destroy();
+                active.data = active.data.substring(0,1);
+            }
+
             active.y -= unit;
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
             active.data = changeNoteUp(active);
