@@ -8,7 +8,10 @@
             body {
                 background: #fafafa;
                 margin: 0;
-                padding: 100px;
+            }
+
+            @media all and (min-width: 550px){
+                body { padding-top: 50px; }
             }
 
             body > * {
