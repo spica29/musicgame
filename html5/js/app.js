@@ -71,6 +71,7 @@ var circle;
 //count notes in one bar
 var countNote = 0;
 var countBars = 0;
+var displayPointsInBar = null;
 var activeChord, chordsList, numberOfChordsInGame = 3;
 
 function shuffleArray(array) {
@@ -94,7 +95,7 @@ function shuffleArray(array) {
 
 function calculatePoints(numberOfMistakes) {
     if(numberOfMistakes == 0)
-        return 5*Math.sqrt(speed);
+        return Math.round(5*Math.sqrt(speed) * 100) / 100;
     else return (-1)*5*numberOfMistakes;
 }
 
@@ -216,8 +217,6 @@ function writeText(text1, x , y) {
     text.fontSize = 40;
     text.fixedToCamera = true;
     text.cameraOffset.setTo(x, y);
-
-    return text;
 }
 
 function flash() {
@@ -427,6 +426,8 @@ function update() {
         keys.right = true;
     } else {
         if (keys.right) {
+            if(displayPointsInBar != null)
+                displayPointsInBar.destroy();
         	countNote += 1;
             activeNote += 1;
             activeNote = Math.max(0, activeNote);
@@ -475,8 +476,19 @@ function update() {
                     console.log("number of mistakes: " + numberOfMistakes);
                     
                     var pointsInBar = calculatePoints(numberOfMistakes);
-                    points += pointsInBar;
-                    displayPoints.setText("Points: " + points);
+                    //display points
+                    displayPointsInBar = game.add.text(width - 120, 20, pointsInBar);
+                    displayPointsInBar.anchor.setTo(0.5);
+
+                    displayPointsInBar.font = 'Revalia';
+                    displayPointsInBar.fontSize = 20;
+                    displayPointsInBar.color = "red";
+                    displayPointsInBar.fixedToCamera = true;
+                    displayPointsInBar.cameraOffset.setTo(width - 120, 20);
+
+                    //writeText(width - 200, 100, pointsInBar);
+                    points += Math.round(pointsInBar * 100) / 100;
+                    displayPoints.setText("Points: " + (Math.round(points* 100) / 100));
                     correctChords += 1;
                     
 
