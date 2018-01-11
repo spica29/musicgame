@@ -45,6 +45,7 @@ var lines;
 var notes;
 var clef;
 var verticalLines;
+var horizontalLines;
 var sharp, flat;
 /* state */
 
@@ -82,6 +83,7 @@ function preload() {
     game.load.image('flat', 'assets/flat-sign.png');
     game.load.image('noteActive', 'assets/noteActive.png');
     game.load.image('verticalLine', 'assets/vertical-line.png');
+    game.load.image('horizontalLine', 'assets/horizontal-line.png')
 
     //text
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -102,6 +104,7 @@ function create() {
     sharps = game.add.group();
     flats = game.add.group();
     verticalLines = game.add.group();
+    horizontalLines = game.add.group();
 
     //draw clef
     clef.create(0, unit*6, 'g-clef');
@@ -203,6 +206,16 @@ function update() {
             active.y -= unit;
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
             active.data = changeNoteUp(active);
+            if(active.y > 428 & active.y < 457){
+                if(keys.up){
+                    horizontalLines.children[0].destroy();
+                }
+            }
+            if(active.y > 485 & active.y < 514){
+                if(keys.up){
+                    horizontalLines.children[1].destroy();
+                }
+            }
         }
         keys.up = false;
     }
@@ -213,6 +226,14 @@ function update() {
             active.y += unit;
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
             active.data = changeNoteDown(active);
+            console.log(active.y);
+            if(active.y > 429 & active.y < 458){
+                horizontalLines.create(active.x-12, active.y+3, 'horizontalLine');
+            }
+            if(active.y > 486 & active.y < 515){
+                horizontalLines.create(active.x-12, active.y+3, 'horizontalLine');
+            }
+
         } 
         keys.down = false;
     }
