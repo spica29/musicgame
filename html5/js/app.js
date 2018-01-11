@@ -154,7 +154,6 @@ function create() {
 
     game.camera.follow(circle);
 
-    game.world.setBounds(0, 0, 10000000, this.game.height);
     //game.camera.setSize(this.game.width, this.game.height);
 
     lines = game.add.group();
@@ -184,7 +183,8 @@ function create() {
         verticalLines.create(485 + i * 150 * 3,  unit*7, 'verticalLine');
     }
 
-    console.log("size of chords list " + chordsList.length + ", size of notes list" + chordsList.length);
+    //console.log("ver lines " + verticalLines.children[verticalLines.children.length-1].x);
+    game.world.setBounds(0, 0, verticalLines.children[verticalLines.children.length-1].x + 95, this.game.height);
     //draw notes
     for (var i = 0; i < chordsList.length*3; i += 1) {
         var addedNote = notes.create(150 + i * 150, 400, 'note');
@@ -231,7 +231,8 @@ function writeText(text1) {
 
 function update() {
     circle.body.moveRight(speed);
-    speed += 1;
+    speed += 0.05;
+    console.log("speed " + speed);
     notes.children.forEach(function (sprite) {
         sprite.loadTexture('note');
         /*
