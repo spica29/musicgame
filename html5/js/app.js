@@ -471,6 +471,10 @@ function update() {
                     displayIncreaseSpeed.cameraOffset.setTo(width/2, height - 70);
                 }
             }
+            console.log("width " + width/4);
+            if(distanceForIncSpeed > width/4) {
+                circle.body.x = circle.x + 150;
+            }
 
             if(displayPointsInBar != null){
                 displayPointsInBar.destroy();
