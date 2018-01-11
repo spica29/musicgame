@@ -45,6 +45,7 @@ var lines;
 var notes;
 var clef;
 var verticalLines;
+var horizontalLines;
 var sharp, flat;
 /* state */
 var speed = 20;
@@ -100,6 +101,7 @@ function preload() {
     game.load.image('flat', 'assets/images/flat-sign.png');
     game.load.image('noteActive', 'assets/images/noteActive.png');
     game.load.image('verticalLine', 'assets/images/vertical-line.png');
+    game.load.image('horizontalLine', 'assets/images/horizontal-line.png')
 
     //text
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -162,6 +164,7 @@ function create() {
     sharps = game.add.group();
     flats = game.add.group();
     verticalLines = game.add.group();
+    horizontalLines = game.add.group();
 
     //draw clef
     clef.create(0, unit*6, 'g-clef');
@@ -305,6 +308,44 @@ function update() {
             active.y -= unit;
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
             active.data = changeNoteUp(active);
+            if(active.y > 428 & active.y < 457){
+                if(keys.up){
+                    for (var i = 0; i < horizontalLines.length; i += 1) {
+                        if(horizontalLines.children[i].data === "line1"){
+                            horizontalLines.children[i].destroy();
+                        }
+                    }
+                }
+            }
+            if(active.y > 485 & active.y < 514){
+                if(keys.up){
+                    for (var i = 0; i < horizontalLines.length; i += 1) {
+                        if(horizontalLines.children[i].data === "line2"){
+                            horizontalLines.children[i].destroy();
+                        }
+                    }
+                }
+            }
+            if(active.y < 28){
+                for (var i = 0; i < horizontalLines.length; i += 1){
+                    var check = false;
+                    if(horizontalLines.children[i].data === "line5"){
+                        check = true;
+                        break;
+                    }
+                }
+                if(check === false){
+                    horizontalLines.create(active.x-12, active.y, 'horizontalLine').data = "line5";}
+            }
+
+
+            if(active.y > 57 & active.y < 85){
+                horizontalLines.create(active.x-12, active.y, 'horizontalLine').data = "line4";
+            }
+
+            if(active.y > 114 & active.y < 142){
+                horizontalLines.create(active.x-12, active.y, 'horizontalLine').data = "line3";
+            }
         }
         keys.up = false;
     }
@@ -315,6 +356,42 @@ function update() {
             active.y += unit;
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
             active.data = changeNoteDown(active);
+            if(active.y > 429 & active.y < 458){
+                horizontalLines.create(active.x-12, active.y+3, 'horizontalLine').data = "line1";
+            }
+            if(active.y > 486 & active.y < 515){
+                horizontalLines.create(active.x-12, active.y+3, 'horizontalLine').data = "line2";
+            }
+
+            if(active.y > 58 & active.y < 86){
+                if(keys.down){
+                    for (var i = 0; i < horizontalLines.length; i += 1) {
+                        if(horizontalLines.children[i].data === "line4"){
+                            horizontalLines.children[i].destroy();
+                        }
+                    }
+                }
+            }
+
+            if(active.y < 29 & active.y > 0){
+                if(keys.down){
+                    for (var i = 0; i < horizontalLines.length; i += 1) {
+                        if(horizontalLines.children[i].data === "line5"){
+                            horizontalLines.children[i].destroy();
+                        }
+                    }
+                }
+            }
+
+            if(active.y > 115 & active.y < 143){
+                if(keys.down){
+                    for (var i = 0; i < horizontalLines.length; i += 1) {
+                        if(horizontalLines.children[i].data === "line3"){
+                            horizontalLines.children[i].destroy();
+                        }
+                    }
+                }
+            }
         } 
         keys.down = false;
     }
