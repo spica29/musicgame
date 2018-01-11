@@ -69,11 +69,12 @@ var textTime = null;
 var correctChords = 0;
 var sharps, flats;
 var circle;
+var times = 3, countTimes = 0;
 //count notes in one bar
 var countNote = 0;
 var countBars = 0;
 var displayPointsInBar = null;
-var activeChord, chordsList, numberOfChordsInGame = 3;
+var activeChord, chordsList;
 
 function shuffleArray(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -148,7 +149,7 @@ function create() {
     var addedLevel = location.split('level=')[1];
     //console.log("level " + addedLevel);
     setLevel(addedLevel);
-    setActiveChords(numberOfChordsInGame);
+    setActiveChords(times);
 
     //set up camera to follow circle
     game.physics.startSystem(Phaser.Physics.P2JS);
@@ -482,6 +483,24 @@ function update() {
 
         	countNote += 1;
             activeNote += 1;
+
+            console.log("active chord " + activeChord[0] + ", chordsList last " + chordsList[chordsList.length-1][0]);
+            if(activeChord[0] == chordsList[chordsList.length-1][0]) {
+                console.log("active note" + activeNote);
+                if(countTimes < times * 3 - 1) //three notes in each chord
+                    countTimes++;
+                else {
+                    console.log("end game");
+                    flash();
+                    game.paused = true;
+                    game.add.text(notes.children[activeNote-1].x + 500, (height/2) - 150, "You won " + points + " points!", { font: '30px Arial', fill: '#551a8b' });
+                    game.add.text(notes.children[activeNote-1].x + 520, (height/2) - 100, "PLAY AGAIN?", { font: '30px Arial', fill: '#551a8b'});
+                    button.x = notes.children[activeNote-1].x + 530;
+                    button.visible = true;
+                    return;
+                }                
+            }
+
             //console.log("y coordinate of note " + notes.children[activeNote-1].y);
             //console.log("size of first chord " +  chordsList[countBars][1].length);
             //check if next is bar
