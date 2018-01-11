@@ -303,13 +303,13 @@ function update() {
             //check what is drawn in front of note
             if(active.data.indexOf("sharp") == -1 && active.data.indexOf("flat") == -1){
                 //change to sharp
-                sharp = sharps.create(active.x - 80, active.y - 20, 'sharp');
+                sharp = sharps.create(active.x - 78, active.y - 20, 'sharp');
                 active.data = active.data + "-sharp";
                 console.log("Change to sharp, active note data " + active.data);
             }
             else if (active.data.indexOf("sharp") !== -1){
                 //change to sharp
-                flat = flats.create(active.x - 100, active.y - 35, 'flat');
+                flat = flats.create(active.x - 78, active.y - 35, 'flat');
                 active.data = active.data.substring(0,1) + "-flat";
                 console.log("Change to flat, active note data " + active.data);
                 //remove sharp
