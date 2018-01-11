@@ -264,7 +264,7 @@ function writeText(text1) {
 
 function flash() {
     //  You can set your own flash color and duration
-    game.camera.flash(0xff0000, 500);
+    game.camera.flash(0x9ee5f1, 200);
     game.camera.x = 0;
     speed = 0;
     //stopGame();
