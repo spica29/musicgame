@@ -48,6 +48,7 @@ var verticalLines;
 var sharp, flat;
 /* state */
 var speed = 20;
+var points = 0;
 
 var keys = {
     up: false,
@@ -61,7 +62,7 @@ var mistake1, mistake2, mistake3;
 
 var activeNote = 0;
 var text = null;
-var time = null;
+var time = null, displayPoints = null;
 var textTime = null;
 var correctChords = 0;
 var grd;
@@ -90,9 +91,18 @@ function shuffleArray(array) {
     return array;
 }
 
+function calculatePoints(numberOfMistakes) {
+    if(numberOfMistakes == 0)
+        points += 5*Math.sqrt(speed);
+    else points -= 5*numberOfMistakes;
+}
+
 function preload() {
-	game.stage.backgroundColor = "#FFF";
+	//game.stage.backgroundColor = "#FFF";
     game.load.image('circle', 'assets/images/empty.png');
+    game.load.image('background1', 'assets/images/background.png');
+    game.load.image('background2', 'assets/images/background2.png');
+    game.load.image('background3', 'assets/images/background3.png');
 
     game.load.image('g-clef', 'assets/images/g-clef.png');
     game.load.image('note', 'assets/images/note.png');
@@ -138,11 +148,22 @@ function p(pointer) {
 }
 
 function create() {
+    game.add.tileSprite(0, 0, 1000, 600, 'background1');
+    game.add.tileSprite(1000, 600, 1000, 600, 'background2');
+
     var location = window.location.href;
     var addedLevel = location.split('level=')[1];
     console.log("level " + addedLevel);
     setLevel(addedLevel);
     setActiveChords(numberOfChordsInGame);
+    //
+    
+    /*
+    time = game.add.text(1150, unit*3 , this.game.time.totalElapsedSeconds());
+    time.anchor.setTo(0.5);
+    textTime = game.add.text(1150, unit*2 , "Time");
+    textTime.anchor.setTo(0.5);
+    */
 
     //set up camera to follow circle
     game.physics.startSystem(Phaser.Physics.P2JS);
@@ -214,25 +235,35 @@ function create() {
     mistake3.anchor.setTo(0.5);
     mistake3.font = 'Revalia';
     mistake3.fontSize = 12;
+
+
+    displayPoints = game.add.text(width - 200, 50, "Points: " + points, { font: "42px Revalia", fill: "black", align: "center"});
+    displayPoints.fixedToCamera = true;
+    displayPoints.cameraOffset.setTo(width - 200, 50);
 }
 
 function writeText(text1) {
     text = game.add.text(550, unit*3 , text1);
     text.anchor.setTo(0.5);
 
+    /*
     time = game.add.text(1150, unit*3 , this.game.time.totalElapsedSeconds());
     time.anchor.setTo(0.5);
     textTime = game.add.text(1150, unit*2 , "Time");
     textTime.anchor.setTo(0.5);
-
+    */
     text.font = 'Revalia';
     text.fontSize = 40;
+    text.fixedToCamera = true;
+    text.cameraOffset.setTo(550, unit*3);
 }
 
 function update() {
+    //check if active note is in camera bounds
+
     circle.body.moveRight(speed);
     speed += 0.05;
-    console.log("speed " + speed);
+    //console.log("speed " + speed);
     notes.children.forEach(function (sprite) {
         sprite.loadTexture('note');
         /*
@@ -269,6 +300,7 @@ function update() {
     });
     var active = notes.children[activeNote];
     active.loadTexture('noteActive');
+    console.log("note inside" + game.world.camera.view.intersects(active._bounds));
 
     if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
         keys.spacebar = true;
@@ -376,51 +408,15 @@ function update() {
 
         			var position = 0;
 
-                    var goodGame = checkPlayedNotes(firstNote, secondNote, thirdNote, firstNotePlayed.data, secondNotePlayed.data, thirdNotePlayed.data);
-                    console.log("continue: " + goodGame);
+                    var numberOfMistakes = checkPlayedNotes(firstNote, secondNote, thirdNote, firstNotePlayed.data, secondNotePlayed.data, thirdNotePlayed.data);
+                    console.log("number of mistakes: " + numberOfMistakes);
                     
-                    var endGame = "";
-                    /*
-                    if(firstNote == firstNotePlayed.data){
-                        console.log("first note ok ");
-                        mistake1.setText("first note ok ");
-                        mistake1.x += 265;
-                        correctNotes += 1;
-                    }else {
-                        endGame += "first note bad \n";
-                        console.log("first note bad");
-                        mistake1.setText("first note bad");
-                        mistake1.x += 265;
-                    }
+                    calculatePoints(numberOfMistakes);
+                    displayPoints.setText("Points: " + points);
+                    correctChords += 1;
+                    
 
-                    if(secondNote == secondNotePlayed.data){
-                        console.log("second note ok ");
-                        mistake2.setText("second note ok ");
-                        mistake2.x += 265;
-                        correctNotes += 1;
-                    } else {
-                        endGame += "second note bad\n";
-                        console.log("second note bad");
-                        mistake2.setText("second note bad ");
-                        mistake2.x += 265;
-                    }
-
-                    if(thirdNote == thirdNotePlayed.data){
-                        console.log("third note ok ");
-                        mistake3.setText("third note ok ");
-                        mistake3.x += 265;
-                        correctNotes += 1;
-                    } else {
-                        endGame += "third note bad\n";
-                        console.log("third note bad");
-                        mistake3.setText("third note bad ");
-                        mistake3.x += 265;
-                    }*/
-                    if (correctNotes === 3){
-                        correctChords += 1;
-                    }
-
-                    if(endGame != "") {
+                    if(false) {
                         alert((correctChords * this.game.time.totalElapsedSeconds().toFixed(2)) + " points");
                         this.game.state.restart();
                         game.destroy();
@@ -438,7 +434,7 @@ function update() {
         		}
 
 
-                if(endGame == ""){
+                //if(endGame == ""){
                     //start counting notes in bar from beginning
                     countNote = 0;
                     //go to next bar
@@ -446,7 +442,7 @@ function update() {
                     //update active chord
                     activeChord = chordsList[countBars];
                     text.setText(chordsList[countBars][0]);
-        		}
+        		//}
             }
         }
         keys.right = false;
@@ -454,13 +450,39 @@ function update() {
 }
 
 function checkPlayedNotes(firstNote, secondNote, thirdNote, firstNotePlayed, secondNotePlayed, thirdNotePlayed) {
-    return((firstNotePlayed == firstNote && secondNotePlayed == secondNote && thirdNotePlayed == thirdNote) ||
+    /*return((firstNotePlayed == firstNote && secondNotePlayed == secondNote && thirdNotePlayed == thirdNote) ||
         (firstNotePlayed == secondNote && secondNotePlayed == thirdNote && thirdNotePlayed == firstNote) ||
-        (firstNotePlayed == thirdNote && secondNotePlayed == firstNote && thirdNotePlayed == secondNote))
+        (firstNotePlayed == thirdNote && secondNotePlayed == firstNote && thirdNotePlayed == secondNote))*/
+
+    if(firstNotePlayed == firstNote) {
+        if(secondNotePlayed == secondNote) {
+            if(thirdNotePlayed == thirdNote) return 0;
+            else return 1; //third wrong
+        } else {
+            if(thirdNotePlayed == thirdNote) return 1;  //second wrong
+            else return 2; //second and third wrong
+        } 
+    } else if(firstNotePlayed == secondNote) {
+        if(secondNotePlayed == thirdNote) {
+            if(thirdNotePlayed == firstNote) return 0;
+            else return 1; 
+        } else {
+            if(thirdNotePlayed == firstNote) return 1; 
+            else return 2;
+        } 
+    } else if(firstNotePlayed == thirdNote) {
+        if(secondNotePlayed == firstNote) {
+            if(thirdNotePlayed == secondNote) return 0;
+            else return 1; 
+        } else {
+            if(thirdNotePlayed == secondNote) return 1; 
+            else return 2;
+        } 
+    } else return 3; //all three wrong
 }
 
 function render() {
-    time.setText(this.game.time.totalElapsedSeconds().toFixed(2));
+    //time.setText(this.game.time.totalElapsedSeconds().toFixed(2));
 }
 
 /*var  = ([
