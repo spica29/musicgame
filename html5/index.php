@@ -14,20 +14,9 @@
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	</head>
-	<body>
+	<body><img src="assets/images/background8.jpg" alt="" style="max-height:400px; width:100%"/>
 		<!-- Wrapper -->
 			<div id="wrapper">
-
-				<!-- Header -->
-					<header id="header">
-						<div class="inner">
-							<span class="image" >
-								<img src="images/background.png" alt="" style="max-height:400px; width:100%"/>
-							</span>
-
-						</div>
-					</header>
-
 				<!-- Menu -->
 					<nav id="menu">
 						<h2>Menu</h2>
