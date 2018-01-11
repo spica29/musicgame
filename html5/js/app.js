@@ -494,7 +494,7 @@ function update() {
                     flash();
                     game.paused = true;
                     game.add.text(notes.children[activeNote-1].x - 600, (height/2) - 150, "You won " + points + " points!", { font: '30px Arial', fill: '#551a8b' });
-                    game.add.text(notes.children[activeNote-1].x - 570, (height/2) - 100, "PLAY AGAIN?", { font: '30px Arial', fill: '#551a8b'});
+                    game.add.text(notes.children[activeNote-1].x - 550, (height/2) - 100, "PLAY AGAIN?", { font: '30px Arial', fill: '#551a8b'});
                     button.x = notes.children[activeNote-1].x - 530;
                     button.visible = true;
                     return;
