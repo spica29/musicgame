@@ -6,6 +6,7 @@ var unit = height / 21; //number of tones
 var minUnit = 0;
 var maxUnit = 600 - 2 * unit;
 var text;
+var button;
 //up to two sharp/flat 
 var chordsEasy = [["c-major", ["c", "e", "g"]], ["a-minor", ["a", "c", "e"]], 
                 ["g-major", ["g", "b", "d"]], ["e-minor", ["e", "g", "b"]], 
@@ -110,7 +111,8 @@ function preload() {
     game.load.image('flat', 'assets/images/flat-sign.png');
     game.load.image('noteActive', 'assets/images/noteActive.png');
     game.load.image('verticalLine', 'assets/images/vertical-line.png');
-    game.load.image('horizontalLine', 'assets/images/horizontal-line.png')
+    game.load.image('horizontalLine', 'assets/images/horizontal-line.png');
+    game.load.spritesheet('button', 'assets/images/button.png', 193, 71);
 
     //text
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -207,6 +209,8 @@ function create() {
     displayPoints.fontSize = 40;
     displayPoints.fixedToCamera = true;
     displayPoints.cameraOffset.setTo(width - 200, 50);
+    button = game.add.button((width/2)+100, (height/2)-60, 'button', stopGame, this, 2, 1, 0);
+    button.visible = false;
 }
 
 function writeText(text1, x , y) {
@@ -221,14 +225,14 @@ function writeText(text1, x , y) {
 
 function flash() {
     //  You can set your own flash color and duration
-    game.camera.flash(0x9ee5f1, 200);
+    //game.camera.flash(0x9ee5f1, 200);
     game.camera.x = 0;
     speed = 0;
     //stopGame();
 }
 
 function stopGame() {
-    alert((correctChords * this.game.time.totalElapsedSeconds().toFixed(2)) + " points");
+    //alert((correctChords * this.game.time.totalElapsedSeconds().toFixed(2)) + " points");
     this.game.state.restart();
     game.destroy();
     game = new Phaser.Game(
@@ -288,6 +292,7 @@ function update() {
     if(distance >= width/2 + 45) {
         flash();
         game.paused = true;
+        button.visible = true;
     }
 
     if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
