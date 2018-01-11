@@ -262,6 +262,28 @@ function writeText(text1) {
     text.cameraOffset.setTo(550, unit*3);
 }
 
+function flash() {
+    //  You can set your own flash color and duration
+    game.camera.flash(0xff0000, 500);
+    game.camera.x = 0;
+    speed = 0;
+    //stopGame();
+}
+
+function stopGame() {
+    alert((correctChords * this.game.time.totalElapsedSeconds().toFixed(2)) + " points");
+    this.game.state.restart();
+    game.destroy();
+    game = new Phaser.Game(
+        1200,
+        600,
+        Phaser.CANVAS,
+        'phaser-example',
+        {preload: preload, create: create, update: update, render: render}, correctChords=0, countNote=0, countBars=0,
+        activeChord = chordsList[0], activeNote=0
+    );
+}
+
 function update() {
     circle.body.moveRight(speed);
     speed += 0.05;
@@ -306,7 +328,8 @@ function update() {
     //check if active note is in camera bounds
     var distance = game.physics.arcade.distanceBetween(circle, active);
     if(distance >= width/2 + 45) {
-        alert("end");
+        flash();
+        game.paused = true;
     }
 
     if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
@@ -498,18 +521,7 @@ function update() {
                     
 
                     if(false) {
-                        alert((correctChords * this.game.time.totalElapsedSeconds().toFixed(2)) + " points");
-                        this.game.state.restart();
-                        game.destroy();
-                        game = new Phaser.Game(
-                            1200,
-                            600,
-                            Phaser.CANVAS,
-                            'phaser-example',
-                            {preload: preload, create: create, update: update, render: render}, correctChords=0, countNote=0, countBars=0,
-                            activeChord = chordsList[0], activeNote=0
-                        );
-
+                        stopGame();
                     }
 
         		}
