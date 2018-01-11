@@ -72,10 +72,7 @@ var activeChord = chordsEasy[0];
 
 function preload() {
 	game.stage.backgroundColor = "#FFF";
-    game.load.image('nebula-1', 'assets/nebula-1.jpg');
-    game.load.image('nebula-2', 'assets/nebula-2.png');
-    game.load.image('nebula-3', 'assets/nebula-3.jpg');
-    game.load.image('nebula-4', 'assets/nebula-4.png');
+    game.load.image('circle', 'assets/circle.png');
 
 	game.load.image('g-clef', 'assets/g-clef.png');
     game.load.image('note', 'assets/note.png');
@@ -88,15 +85,21 @@ function preload() {
     //text
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 }
+var circle;
 
 function create() {
-    game.add.tileSprite(0, 0, 223, 223, 'nebula-1');
-    game.add.tileSprite(200, 400, 250, 250, 'nebula-2');
-    game.add.tileSprite(400, 0, 440, 440, 'nebula-3');
-    game.add.tileSprite(700, 200, 1024, 768, 'nebula-4');
+    //set up camera to follow circle
+    game.physics.startSystem(Phaser.Physics.P2JS);
 
-    game.world.setBounds(0, 0, this.game.width, this.game.height);
-    game.camera.setSize(this.game.width, this.game.height);
+    circle = game.add.sprite(game.world.centerX, game.world.centerY, 'circle');
+
+    game.physics.p2.enable(circle);
+    //circle.visible=false;
+
+    game.camera.follow(circle);
+
+    game.world.setBounds(0, 0, 10000000, this.game.height);
+    //game.camera.setSize(this.game.width, this.game.height);
 
     lines = game.add.group();
     notes = game.add.group();
@@ -165,11 +168,15 @@ function writeText(text1) {
 }
 
 function update() {
+    //circle.body.setZeroVelocity();
+    circle.body.moveRight(100);
+
     notes.children.forEach(function (sprite) {
         sprite.loadTexture('note');
     })
     var active = notes.children[activeNote];
     active.loadTexture('noteActive');
+
 
     if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
         keys.spacebar = true;
@@ -262,7 +269,7 @@ function update() {
                 game.world.bounds.width += 150;
                 notes.create(150 + (150 * notes.children.length), 400, 'note').data = "e";
         		verticalLines.create(150 + notes.children.length * 150 * 3, unit*7, 'verticalLine');
-                game.camera.x += 150;
+                //game.camera.x += 150;
                 text.x += 150;
                 time.x += 150;
                 textTime.x += 150;
