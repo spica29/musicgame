@@ -103,6 +103,8 @@ function preload() {
     game.load.image('background1', 'assets/images/background.png');
     game.load.image('background2', 'assets/images/background2.png');
     game.load.image('background3', 'assets/images/background3.png');
+    game.load.image('background4', 'assets/images/background4.jpg');
+    game.load.image('background5', 'assets/images/background5.jpg');
 
     game.load.image('g-clef', 'assets/images/g-clef.png');
     game.load.image('note', 'assets/images/note.png');
@@ -148,8 +150,7 @@ function p(pointer) {
 }
 
 function create() {
-    game.add.tileSprite(0, 0, 1000, 600, 'background1');
-    game.add.tileSprite(1000, 600, 1000, 600, 'background2');
+    game.add.tileSprite(0, 0, 1000, 600, 'background5');
 
     var location = window.location.href;
     var addedLevel = location.split('level=')[1];
