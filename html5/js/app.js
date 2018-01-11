@@ -95,7 +95,7 @@ function shuffleArray(array) {
 function calculatePoints(numberOfMistakes) {
     if(numberOfMistakes == 0)
         return 5*Math.sqrt(speed);
-    else return 5*numberOfMistakes;
+    else return (-1)*5*numberOfMistakes;
 }
 
 function preload() {
@@ -198,17 +198,26 @@ function create() {
     }
 
     writeText(chordsList[0][0], 550, unit*3);
-    writeText("Points: " + points, width - 200, 50);
+    //writeText("Points: " + points, width - 200, 50);
+    displayPoints = game.add.text(width - 200, 50, "Points: " + points);
+    displayPoints.anchor.setTo(0.5);
+
+    displayPoints.font = 'Revalia';
+    displayPoints.fontSize = 40;
+    displayPoints.fixedToCamera = true;
+    displayPoints.cameraOffset.setTo(width - 200, 50);
 }
 
 function writeText(text1, x , y) {
-    text = game.add.text(x, y , text1);
+    text = game.add.text(x, y, text1);
     text.anchor.setTo(0.5);
 
     text.font = 'Revalia';
     text.fontSize = 40;
     text.fixedToCamera = true;
     text.cameraOffset.setTo(x, y);
+
+    return text;
 }
 
 function flash() {
