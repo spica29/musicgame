@@ -94,8 +94,8 @@ function shuffleArray(array) {
 
 function calculatePoints(numberOfMistakes) {
     if(numberOfMistakes == 0)
-        points += 5*Math.sqrt(speed);
-    else points -= 5*numberOfMistakes;
+        return 5*Math.sqrt(speed);
+    else return 5*numberOfMistakes;
 }
 
 function preload() {
@@ -139,14 +139,6 @@ function setActiveChords(times){
     activeChord = chordsList[0];
 }
 
-
-function p(pointer) {
-
-    // console.log(pointer.);
-    console.log(pointer.event);
-
-}
-
 function create() {
     game.add.tileSprite(0, 0, 19200, 600, 'background');
 
@@ -155,25 +147,12 @@ function create() {
     console.log("level " + addedLevel);
     setLevel(addedLevel);
     setActiveChords(numberOfChordsInGame);
-    //
-    
-    /*
-    time = game.add.text(1150, unit*3 , this.game.time.totalElapsedSeconds());
-    time.anchor.setTo(0.5);
-    textTime = game.add.text(1150, unit*2 , "Time");
-    textTime.anchor.setTo(0.5);
-    */
 
     //set up camera to follow circle
     game.physics.startSystem(Phaser.Physics.P2JS);
-
     circle = game.add.sprite(game.world.centerX, game.world.centerY, 'circle');
-
     game.physics.p2.enable(circle);
-    //circle.visible=false;
-
     game.camera.follow(circle);
-
     //game.camera.setSize(this.game.width, this.game.height);
 
     lines = game.add.group();
@@ -204,7 +183,6 @@ function create() {
         verticalLines.create(485 + i * 150 * 3,  unit*7, 'verticalLine');
     }
 
-    //console.log("ver lines " + verticalLines.children[verticalLines.children.length-1].x);
     game.world.setBounds(0, 0, verticalLines.children[verticalLines.children.length-1].x + 95, this.game.height);
     //draw notes
     for (var i = 0; i < chordsList.length*3; i += 1) {
@@ -219,43 +197,18 @@ function create() {
         //sprite.data = "e"; //set all notes on e
     }
 
-    writeText(chordsList[0][0]);
-    //mistake 
-    mistake1 = game.add.text(0, unit*17, "");
-    mistake1.anchor.setTo(0.5);
-    mistake1.font = 'Revalia';
-    mistake1.fontSize = 12;
-
-    mistake2 = game.add.text(0, unit*18, "");
-    mistake2.anchor.setTo(0.5);
-    mistake2.font = 'Revalia';
-    mistake2.fontSize = 12;
-
-    mistake3 = game.add.text(0, unit*19, "");
-    mistake3.anchor.setTo(0.5);
-    mistake3.font = 'Revalia';
-    mistake3.fontSize = 12;
-
-
-    displayPoints = game.add.text(width - 200, 50, "Points: " + points, { font: "42px Revalia", fill: "black", align: "center"});
-    displayPoints.fixedToCamera = true;
-    displayPoints.cameraOffset.setTo(width - 200, 50);
+    writeText(chordsList[0][0], 550, unit*3);
+    writeText("Points: " + points, width - 200, 50);
 }
 
-function writeText(text1) {
-    text = game.add.text(550, unit*3 , text1);
+function writeText(text1, x , y) {
+    text = game.add.text(x, y , text1);
     text.anchor.setTo(0.5);
 
-    /*
-    time = game.add.text(1150, unit*3 , this.game.time.totalElapsedSeconds());
-    time.anchor.setTo(0.5);
-    textTime = game.add.text(1150, unit*2 , "Time");
-    textTime.anchor.setTo(0.5);
-    */
     text.font = 'Revalia';
     text.fontSize = 40;
     text.fixedToCamera = true;
-    text.cameraOffset.setTo(550, unit*3);
+    text.cameraOffset.setTo(x, y);
 }
 
 function flash() {
@@ -512,7 +465,8 @@ function update() {
                     var numberOfMistakes = checkPlayedNotes(firstNote, secondNote, thirdNote, firstNotePlayed.data, secondNotePlayed.data, thirdNotePlayed.data);
                     console.log("number of mistakes: " + numberOfMistakes);
                     
-                    calculatePoints(numberOfMistakes);
+                    var pointsInBar = calculatePoints(numberOfMistakes);
+                    points += pointsInBar;
                     displayPoints.setText("Points: " + points);
                     correctChords += 1;
                     
@@ -523,16 +477,13 @@ function update() {
 
         		}
 
-
-                //if(endGame == ""){
-                    //start counting notes in bar from beginning
-                    countNote = 0;
-                    //go to next bar
-                    countBars += 1;
-                    //update active chord
-                    activeChord = chordsList[countBars];
-                    text.setText(chordsList[countBars][0]);
-        		//}
+                //start counting notes in bar from beginning
+                countNote = 0;
+                //go to next bar
+                countBars += 1;
+                //update active chord
+                activeChord = chordsList[countBars];
+                text.setText(chordsList[countBars][0]);
             }
         }
         keys.right = false;
@@ -571,19 +522,8 @@ function checkPlayedNotes(firstNote, secondNote, thirdNote, firstNotePlayed, sec
     } else return 3; //all three wrong
 }
 
-function render() {
-    //time.setText(this.game.time.totalElapsedSeconds().toFixed(2));
-}
+function render() {}
 
-/*var  = ([
-	"c-major" : ["c", "e", "g"],
-	"g-major" : ["g", "b", "d"],
-	"d-major" : ["d", "f-sharp", "a"],
-	"e-major" : ["e", "g-sharp", "b"],
-	"f-major" : ["f", "a", "c"],
-	"a-major" : ["a", "c-sharp", "e"],
-	"b-flat-major" : ["b-flat", "d", "f"]
-])*/
 
 function changeNoteUp(activeNote) {
     switch(activeNote.data) {
