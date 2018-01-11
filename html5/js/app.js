@@ -120,7 +120,6 @@ function preload() {
 
 function setLevel(setLevel){
     level = setLevel;
-    console.log("set level " + level); 
 }
 
 function setActiveChords(times){
@@ -147,7 +146,7 @@ function create() {
 
     var location = window.location.href;
     var addedLevel = location.split('level=')[1];
-    console.log("level " + addedLevel);
+    //console.log("level " + addedLevel);
     setLevel(addedLevel);
     setActiveChords(numberOfChordsInGame);
 
@@ -384,6 +383,15 @@ function update() {
         keys.down = true;
     } else {
         if (keys.down) {
+            //remove sharps and flats
+            if(active.data.indexOf("sharp") !== -1){
+                sharps.children[sharps.children.length - 1].destroy();
+                active.data = active.data.substring(0,1);
+            } else if (active.data.indexOf("flat") !== -1) {
+                flats.children[flats.children.length - 1].destroy();
+                active.data = active.data.substring(0,1);
+            }
+            
             active.y += unit;
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
             active.data = changeNoteDown(active);
@@ -442,9 +450,13 @@ function update() {
         if (keys.right) {
             if(displayIncreaseSpeed != null){
                 displayIncreaseSpeed.destroy();
+                displayIncreaseSpeed = null;
             }
-            //increase speed if player is on 3/4 of screen
-            if(active.x > ((width/4)*3)) {
+            //increase speed if player is on 2/3 of screen
+            console.log("active position " + active.x + ", circle position " + circle.x);
+            var distanceForIncSpeed = active.x - circle.x;
+            console.log("distance for increasing speed " + distanceForIncSpeed);
+            if(distanceForIncSpeed > width/5) {
                 speed += 0.3;
                 console.log("increasing speed");
                 if(points > 0) {
@@ -463,26 +475,12 @@ function update() {
 
         	countNote += 1;
             activeNote += 1;
-            activeNote = Math.max(0, activeNote);
-            console.log("active note: " + activeNote);
-            console.log("active " + active.data);
-            if (activeNote > notes.children.length - 5) {
-                activeNote = notes.children.length - 4;
-                game.world.setBounds(0, 0, game.world.bounds.width + 150, game.height);
-                game.world.bounds.width += 150;
-                notes.create(150 + (150 * notes.children.length), 400, 'note').data = "e";
-        		verticalLines.create(150 + notes.children.length * 150 * 3, unit*7, 'verticalLine');
-                game.camera.x += 150;
-                text.x += 150;
-                time.x += 150;
-                textTime.x += 150;
-            }
-            console.log("y coordinate of note " + notes.children[activeNote-1].y);
-            console.log("size of first chord " +  chordsList[countBars][1].length);
+            //console.log("y coordinate of note " + notes.children[activeNote-1].y);
+            //console.log("size of first chord " +  chordsList[countBars][1].length);
             //check if next is bar
             if(countNote == chordsList[countBars][1].length){
         		//check past notes
-        		console.log("NEXT BAR, chord length" + chordsList[1].length);
+        		//console.log("NEXT BAR, chord length" + chordsList[1].length);
         		
         		//check if it was chord or interval before - different sizes
         		if(activeChord[1].length == 2) //interval
@@ -501,12 +499,12 @@ function update() {
         			var firstNotePlayed = notes.children[activeNote-3];
         			var secondNotePlayed = notes.children[activeNote-2];
         			var thirdNotePlayed = notes.children[activeNote-1];
-                    console.log("Played notes: " + firstNotePlayed.data + secondNotePlayed.data+ thirdNotePlayed.data);
+                    //console.log("Played notes: " + firstNotePlayed.data + secondNotePlayed.data+ thirdNotePlayed.data);
 
         			var position = 0;
 
                     var numberOfMistakes = checkPlayedNotes(firstNote, secondNote, thirdNote, firstNotePlayed.data, secondNotePlayed.data, thirdNotePlayed.data);
-                    console.log("number of mistakes: " + numberOfMistakes);
+                    //console.log("number of mistakes: " + numberOfMistakes);
                     
                     var pointsInBar = calculatePoints(numberOfMistakes);
                     //display points
