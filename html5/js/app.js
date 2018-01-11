@@ -112,7 +112,7 @@ function preload() {
     game.load.image('noteActive', 'assets/images/noteActive.png');
     game.load.image('verticalLine', 'assets/images/vertical-line.png');
     game.load.image('horizontalLine', 'assets/images/horizontal-line.png');
-    game.load.spritesheet('button', 'assets/images/button.png', 193, 71);
+    game.load.spritesheet('button', 'assets/images/button.jpg', 193, 71);
 
     //text
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -292,8 +292,9 @@ function update() {
     if(distance >= width/2 + 45) {
         flash();
         game.paused = true;
-        console.log(notes.children[activeNote].x);
-        button.x = notes.children[activeNote].x + 500;
+        game.add.text(notes.children[activeNote].x + 500, (height/2) - 150, "You won " + points + " points!", { font: '30px Arial', fill: '#551a8b' });
+        game.add.text(notes.children[activeNote].x + 520, (height/2) - 100, "PLAY AGAIN?", { font: '30px Arial', fill: '#551a8b'});
+        button.x = notes.children[activeNote].x + 530;
         button.visible = true;
     }
 
