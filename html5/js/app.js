@@ -47,6 +47,7 @@ var clef;
 var verticalLines;
 var sharp, flat;
 /* state */
+var speed = 20;
 
 var keys = {
     up: false,
@@ -64,10 +65,11 @@ var time = null;
 var textTime = null;
 var correctChords = 0;
 var grd;
+var circle;
 //count notes in one bar
 var countNote = 0;
 var countBars = 0;
-var activeChord, activeChords;
+var activeChord, chordsList, numberOfChordsInGame = 3;
 
 function shuffleArray(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -90,10 +92,7 @@ function shuffleArray(array) {
 
 function preload() {
 	game.stage.backgroundColor = "#FFF";
-    game.load.image('nebula-1', 'assets/images/nebula-1.jpg');
-    game.load.image('nebula-2', 'assets/images/nebula-2.png');
-    game.load.image('nebula-3', 'assets/images/nebula-3.jpg');
-    game.load.image('nebula-4', 'assets/images/nebula-4.png');
+    game.load.image('circle', 'assets/images/empty.png');
 
     game.load.image('g-clef', 'assets/images/g-clef.png');
     game.load.image('note', 'assets/images/note.png');
@@ -108,16 +107,26 @@ function preload() {
 
 function setLevel(setLevel){
     level = setLevel;
-    console.log("set level " + level);
+    console.log("set level " + level); 
+}
+
+function setActiveChords(times){
+    chordsList = [];
     if(level == 'easy'){
-        activeChords = shuffleArray(chordsEasy);
+        for(var i = 0; i < times; i++){
+            Array.prototype.push.apply(chordsList, shuffleArray(chordsEasy));
+        }
     } else if(level == 'medium'){
-        activeChords = shuffleArray(chordsMedium);
+        for(var i = 0; i < times; i++){
+            Array.prototype.push.apply(chordsList, shuffleArray(chordsMedium));
+        }
     } else {
-        activeChords = shuffleArray(chordsHard);
+        for(var i = 0; i < times; i++){
+            Array.prototype.push.apply(chordsList, shuffleArray(chordsHard));
+        }
     }
 
-    activeChord = activeChords[0];
+    activeChord = chordsList[0];
 }
 
 
@@ -133,15 +142,20 @@ function create() {
     var addedLevel = location.split('level=')[1];
     console.log("level " + addedLevel);
     setLevel(addedLevel);
+    setActiveChords(numberOfChordsInGame);
 
-    console.log("level " + level);
-    game.add.tileSprite(0, 0, 223, 223, 'nebula-1');
-    game.add.tileSprite(200, 400, 250, 250, 'nebula-2');
-    game.add.tileSprite(400, 0, 440, 440, 'nebula-3');
-    game.add.tileSprite(700, 200, 1024, 768, 'nebula-4');
+    //set up camera to follow circle
+    game.physics.startSystem(Phaser.Physics.P2JS);
 
-    game.world.setBounds(0, 0, this.game.width, this.game.height);
-    game.camera.setSize(this.game.width, this.game.height);
+    circle = game.add.sprite(game.world.centerX, game.world.centerY, 'circle');
+
+    game.physics.p2.enable(circle);
+    //circle.visible=false;
+
+    game.camera.follow(circle);
+
+    game.world.setBounds(0, 0, 10000000, this.game.height);
+    //game.camera.setSize(this.game.width, this.game.height);
 
     lines = game.add.group();
     notes = game.add.group();
@@ -166,26 +180,25 @@ function create() {
         lines.add(graphics);
     }
 
-    for (var i = 0; i < notesOnScreen; i += 1) {
+    for (var i = 0; i < chordsList.length; i += 1) {
         verticalLines.create(485 + i * 150 * 3,  unit*7, 'verticalLine');
     }
 
-
+    console.log("size of chords list " + chordsList.length + ", size of notes list" + chordsList.length);
     //draw notes
-    for (var i = 0; i < notesOnScreen; i += 1) {
+    for (var i = 0; i < chordsList.length*3; i += 1) {
         var addedNote = notes.create(150 + i * 150, 400, 'note');
         addedNote.data = "e";
-        console.log(addedNote);
-        addedNote.alpha = 0.5;
+        //addedNote.alpha = 0.5;
         //addedNote.anchor.set(0.5);
 
-        addedNote.inputEnabled = true;
+        //addedNote.inputEnabled = true;
 
         //game.input.addMoveCallback(p, this);
         //sprite.data = "e"; //set all notes on e
     }
 
-    writeText(activeChords[0][0]);
+    writeText(chordsList[0][0]);
     //mistake 
     mistake1 = game.add.text(0, unit*17, "");
     mistake1.anchor.setTo(0.5);
@@ -217,6 +230,8 @@ function writeText(text1) {
 }
 
 function update() {
+    circle.body.moveRight(speed);
+    speed += 1;
     notes.children.forEach(function (sprite) {
         sprite.loadTexture('note');
         /*
@@ -250,7 +265,7 @@ function update() {
         }
 */
 
-    })
+    });
     var active = notes.children[activeNote];
     active.loadTexture('noteActive');
 
@@ -333,11 +348,11 @@ function update() {
                 textTime.x += 150;
             }
             console.log("y coordinate of note " + notes.children[activeNote-1].y);
-            console.log("size of first chord " +  activeChords[countBars][1].length);
+            console.log("size of first chord " +  chordsList[countBars][1].length);
             //check if next is bar
-            if(countNote == activeChords[countBars][1].length){
+            if(countNote == chordsList[countBars][1].length){
         		//check past notes
-        		console.log("NEXT BAR, chord length" + activeChords[1].length);
+        		console.log("NEXT BAR, chord length" + chordsList[1].length);
         		
         		//check if it was chord or interval before - different sizes
         		if(activeChord[1].length == 2) //interval
@@ -348,9 +363,9 @@ function update() {
         		{
         		    var correctNotes = 0;
         			//get notes from given chord
-        			var firstNote = activeChords[countBars][1][0];
-        			var secondNote = activeChords[countBars][1][1];
-        			var thirdNote = activeChords[countBars][1][2];
+        			var firstNote = chordsList[countBars][1][0];
+        			var secondNote = chordsList[countBars][1][1];
+        			var thirdNote = chordsList[countBars][1][2];
 
         			//get positions from notes in game
         			var firstNotePlayed = notes.children[activeNote-3];
@@ -414,7 +429,7 @@ function update() {
                             Phaser.CANVAS,
                             'phaser-example',
                             {preload: preload, create: create, update: update, render: render}, correctChords=0, countNote=0, countBars=0,
-                            activeChord = activeChords[0], activeNote=0
+                            activeChord = chordsList[0], activeNote=0
                         );
 
                     }
@@ -428,8 +443,8 @@ function update() {
                     //go to next bar
                     countBars += 1;
                     //update active chord
-                    activeChord = activeChords[countBars];
-                    text.setText(activeChords[countBars][0]);
+                    activeChord = chordsList[countBars];
+                    text.setText(chordsList[countBars][0]);
         		}
             }
         }
