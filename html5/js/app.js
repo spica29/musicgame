@@ -260,8 +260,6 @@ function writeText(text1) {
 }
 
 function update() {
-    //check if active note is in camera bounds
-
     circle.body.moveRight(speed);
     speed += 0.05;
     //console.log("speed " + speed);
@@ -301,7 +299,12 @@ function update() {
     });
     var active = notes.children[activeNote];
     active.loadTexture('noteActive');
-    console.log("note inside" + game.world.camera.view.intersects(active._bounds));
+
+    //check if active note is in camera bounds
+    var distance = game.physics.arcade.distanceBetween(circle, active);
+    if(distance >= width/2 + 45) {
+        alert("end");
+    }
 
     if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
         keys.spacebar = true;
