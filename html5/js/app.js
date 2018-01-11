@@ -232,6 +232,8 @@ function flash() {
     //stopGame();
 }
 
+var endGame = false;
+
 function stopGame() {
     //alert((correctChords * this.game.time.totalElapsedSeconds().toFixed(2)) + " points");
     this.game.state.restart();
@@ -490,6 +492,7 @@ function update() {
                 if(countTimes < times * 3 - 1) //three notes in each chord
                     countTimes++;
                 else {
+                    endGame = true;
                     console.log("end game");
                     flash();
                     game.paused = true;
@@ -497,14 +500,13 @@ function update() {
                     game.add.text(notes.children[activeNote-1].x - 570, (height/2) - 100, "PLAY AGAIN?", { font: '30px Arial', fill: '#551a8b'});
                     button.x = notes.children[activeNote-1].x - 530;
                     button.visible = true;
-                    return;
                 }                
             }
 
             //console.log("y coordinate of note " + notes.children[activeNote-1].y);
             //console.log("size of first chord " +  chordsList[countBars][1].length);
             //check if next is bar
-            if(countNote == chordsList[countBars][1].length){
+            if(countNote == chordsList[countBars][1].length && !endGame){
         		//check past notes
         		//console.log("NEXT BAR, chord length" + chordsList[1].length);
         		
