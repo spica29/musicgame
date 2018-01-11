@@ -345,7 +345,7 @@ function update() {
             if(active.y > 428 & active.y < 457){
                 if(keys.up){
                     for (var i = 0; i < horizontalLines.length; i += 1) {
-                        if(horizontalLines.children[i].data === "line1"){
+                        if(horizontalLines.children[i].data === "line1-"  + activeNote){
                             horizontalLines.children[i].destroy();
                         }
                     }
@@ -354,7 +354,7 @@ function update() {
             if(active.y > 485 & active.y < 514){
                 if(keys.up){
                     for (var i = 0; i < horizontalLines.length; i += 1) {
-                        if(horizontalLines.children[i].data === "line2"){
+                        if(horizontalLines.children[i].data === "line2-" + activeNote){
                             horizontalLines.children[i].destroy();
                         }
                     }
@@ -369,16 +369,16 @@ function update() {
                     }
                 }
                 if(check === false){
-                    horizontalLines.create(active.x-12, active.y, 'horizontalLine').data = "line5";}
+                    horizontalLines.create(active.x-12, active.y, 'horizontalLine').data = "line5-" + activeNote;}
             }
 
 
             if(active.y > 57 & active.y < 85){
-                horizontalLines.create(active.x-12, active.y, 'horizontalLine').data = "line4";
+                horizontalLines.create(active.x-12, active.y, 'horizontalLine').data = "line4-" + activeNote;
             }
 
             if(active.y > 114 & active.y < 142){
-                horizontalLines.create(active.x-12, active.y, 'horizontalLine').data = "line3";
+                horizontalLines.create(active.x-12, active.y, 'horizontalLine').data = "line3-" + activeNote;
             }
         }
         keys.up = false;
@@ -400,16 +400,16 @@ function update() {
             active.y = Math.min(Math.max(minUnit, active.y), maxUnit);
             active.data = changeNoteDown(active);
             if(active.y > 429 & active.y < 458){
-                horizontalLines.create(active.x-12, active.y+3, 'horizontalLine').data = "line1";
+                horizontalLines.create(active.x-12, active.y+3, 'horizontalLine').data = "line1-" + activeNote;
             }
             if(active.y > 486 & active.y < 515){
-                horizontalLines.create(active.x-12, active.y+3, 'horizontalLine').data = "line2";
+                horizontalLines.create(active.x-12, active.y+3, 'horizontalLine').data = "line2-" + activeNote;
             }
 
             if(active.y > 58 & active.y < 86){
                 if(keys.down){
                     for (var i = 0; i < horizontalLines.length; i += 1) {
-                        if(horizontalLines.children[i].data === "line4"){
+                        if(horizontalLines.children[i].data === "line4-" + activeNote){
                             horizontalLines.children[i].destroy();
                         }
                     }
@@ -419,7 +419,7 @@ function update() {
             if(active.y < 29 & active.y > 0){
                 if(keys.down){
                     for (var i = 0; i < horizontalLines.length; i += 1) {
-                        if(horizontalLines.children[i].data === "line5"){
+                        if(horizontalLines.children[i].data === "line5-" + activeNote){
                             horizontalLines.children[i].destroy();
                         }
                     }
@@ -429,7 +429,7 @@ function update() {
             if(active.y > 115 & active.y < 143){
                 if(keys.down){
                     for (var i = 0; i < horizontalLines.length; i += 1) {
-                        if(horizontalLines.children[i].data === "line3"){
+                        if(horizontalLines.children[i].data === "line3-" + activeNote){
                             horizontalLines.children[i].destroy();
                         }
                     }
