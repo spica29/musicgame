@@ -209,6 +209,7 @@ function create() {
     displayPoints.fontSize = 40;
     displayPoints.fixedToCamera = true;
     displayPoints.cameraOffset.setTo(width - 200, 50);
+
     button = game.add.button((width/2)+100, (height/2)-60, 'button', stopGame, this, 2, 1, 0);
     button.visible = false;
 }
@@ -285,7 +286,6 @@ function update() {
     });
     var active = notes.children[activeNote];
     active.loadTexture('noteActive');
-
 
     //check if active note is in camera bounds
     var distance = game.physics.arcade.distanceBetween(circle, active);
@@ -440,6 +440,12 @@ function update() {
         keys.right = true;
     } else {
         if (keys.right) {
+            //increase speed if player is on 3/4 of screen
+            if(active.x > width/4*3) {
+                speed += 0.3;
+                console.log("increasing speed");
+            }
+
             if(displayPointsInBar != null)
                 displayPointsInBar.destroy();
         	countNote += 1;
