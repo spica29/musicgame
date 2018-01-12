@@ -362,7 +362,7 @@ function update() {
             if(active.y < 28){
                 for (var i = 0; i < horizontalLines.length; i += 1){
                     var check = false;
-                    if(horizontalLines.children[i].data === "line5"){
+                    if(horizontalLines.children[i].data === "line5-" + activeNote){
                         check = true;
                         break;
                     }
