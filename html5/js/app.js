@@ -33,13 +33,6 @@ var game = new Phaser.Game(
     {preload: preload, create: create, update: update, render: render}
 );
 
-WebFontConfig = {
-    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
-    google: {
-      families: ['Revalia']
-    }
-};
-
 /* layers */
 
 var lines;
@@ -97,7 +90,7 @@ function shuffleArray(array) {
 
 function calculatePoints(numberOfMistakes) {
     if(numberOfMistakes == 0)
-        return Math.round(5*Math.sqrt(speed) * 100) / 100;
+        return parseInt(5*Math.sqrt(speed));
     else return (-1)*5*numberOfMistakes;
 }
 
@@ -546,8 +539,8 @@ function update() {
                     displayPointsInBar.cameraOffset.setTo(width - 120, 20);
 
                     //writeText(width - 200, 100, pointsInBar);
-                    points += Math.round(pointsInBar * 100) / 100;
-                    displayPoints.setText("Points: " + (Math.round(points* 100) / 100));
+                    points += parseInt(pointsInBar);
+                    displayPoints.setText("Points: " + parseInt(points));
                     correctChords += 1;
         		}
 
