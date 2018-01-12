@@ -98,6 +98,7 @@ function preload() {
 	//game.stage.backgroundColor = "#FFF";
     game.load.image('circle', 'assets/images/empty.png');
     game.load.image('background', 'assets/images/merge1.png');
+    game.load.image('background1', 'assets/images/background5.jpg');
 
     game.load.image('g-clef', 'assets/images/g-clef.png');
     game.load.image('note', 'assets/images/note.png');
@@ -137,6 +138,9 @@ function setActiveChords(times){
 
 function create() {
     game.add.tileSprite(0, 0, 19200, 600, 'background');
+    if(game.device.chrome) {
+        game.add.tileSprite(0, 0, 19200, 600, 'background1');
+    }
 
     var location = window.location.href;
     var addedLevel = location.split('level=')[1];
